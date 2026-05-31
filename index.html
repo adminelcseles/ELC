@@ -578,7 +578,7 @@ function doPrint(){
         <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <text x="150" y="260" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="blue" transform="rotate(-90 150 260)">Base H: ${frac(dv.bh)}</text>
         <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(dv.bh)} + ${frac(dv.eh)} = ${frac(th)}</text>
+        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="14" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(th)}</text>
         <rect x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oLR}"/>
         <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}"/>
         <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}"/>
@@ -586,7 +586,7 @@ function doPrint(){
         <text x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="blue">Base W: ${frac(dv.bw)}</text>
         <line x1="220" y1="475" x2="520" y2="475" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18" fill="red">Total W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
+        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="14" fill="red">Total W: ${frac(tw)}</text>
         <text x="370" y="285" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
 
@@ -620,7 +620,7 @@ function doPrint(){
         <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <text x="155" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000" transform="rotate(-90 155 265)">BASE H: ${frac(dv.bh)}</text>
         <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">TOTAL H: ${frac(dv.bh)} + ${frac(dv.eh)} = ${frac(th)}</text>
+        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">TOTAL H: ${frac(th)}</text>
         <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}"/>
         <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}"/>
         <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}"/>
@@ -628,7 +628,7 @@ function doPrint(){
         <text x="390" y="510" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
         <line x1="240" y1="525" x2="540" y2="525" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#1a1aff">TOTAL W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
+        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#1a1aff">TOTAL W: ${frac(tw)}</text>
         <text x="410" y="335" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
     }
@@ -1218,7 +1218,7 @@ function d1SVG(id){
   <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <text id="d1svgBH-${id}" x="155" y="275" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="blue" transform="rotate(-90 155 275)">Base Height: 45</text>
   <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
-  <text id="d1svgTH-${id}" x="65" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="20" fill="red" transform="rotate(-90 65 280)">Total Height: 84 1/2</text>
+  <text id="d1svgTH-${id}" x="65" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="red" transform="rotate(-90 65 280)">Total Height: 84 1/2</text>
   <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
   <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
   <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
@@ -1226,7 +1226,7 @@ function d1SVG(id){
   <text id="d1svgBW-${id}" x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="blue">Base Width: 39 1/2</text>
   <line x1="220" y1="470" x2="520" y2="470" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
-  <text id="d1svgTW-${id}" x="370" y="548" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="20" fill="red">Total Width: 48</text>
+  <text id="d1svgTW-${id}" x="370" y="548" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="red">Total Width: 48</text>
   </svg>`;
 }
 function d1HTML(id){
@@ -1305,7 +1305,7 @@ function d2SVG(id){
   <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <text id="d2svgBH-${id}" x="158" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000" transform="rotate(-90 158 280)">BASE HEIGHT: 45</text>
   <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
-  <text id="d2svgTH-${id}" x="85" y="280" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#1a1aff" transform="rotate(-90 85 280)">TOTAL HEIGHT: 84 1/2</text>
+  <text id="d2svgTH-${id}" x="85" y="280" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1a1aff" transform="rotate(-90 85 280)">TOTAL HEIGHT: 84 1/2</text>
   <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
   <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
   <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
@@ -1313,7 +1313,7 @@ function d2SVG(id){
   <text id="d2svgBW-${id}" x="390" y="512" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000">BASE WIDTH: 39 1/2</text>
   <line x1="240" y1="528" x2="540" y2="528" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <line x1="195" y1="565" x2="585" y2="565" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
-  <text id="d2svgTW-${id}" x="390" y="602" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="#1a1aff">TOTAL WIDTH: 48</text>
+  <text id="d2svgTW-${id}" x="390" y="602" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1a1aff">TOTAL WIDTH: 48</text>
   </svg>`;
 }
 function d2HTML(id){
