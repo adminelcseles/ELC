@@ -7,8 +7,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14px 8px;display:flex;flex-direction:column;gap:12px;align-items:center}
+@media(max-width:600px){body{padding:8px 4px;gap:8px}}
 
 .top-bar{display:flex;align-items:center;gap:8px;width:100%;max-width:720px;flex-wrap:wrap}
+@media(max-width:600px){.top-bar{gap:6px}.tbtn{font-size:13px;padding:8px 12px;min-height:42px}}
 .app-title{font-size:17px;font-weight:700;color:#222}
 .top-btns{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
 .tbtn{padding:7px 13px;font-size:12px;font-weight:700;border-radius:8px;border:2px solid #ccc;background:white;color:#333;cursor:pointer;transition:all .15s}
@@ -22,17 +24,26 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 .tbtn.side-on{background:#f5d800;color:#222;border-color:#e6c800}
 
 /* CUSTOMER */
-.cust-card{background:white;border-radius:12px;border:2px solid #f5d80099;padding:14px;width:100%;max-width:720px}
+.cust-card{background:white;border-radius:12px;border:2px solid #f5d80099;padding:14px 12px;width:100%;max-width:720px;box-sizing:border-box}
 .cust-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.cfield{display:flex;flex-direction:column;gap:3px}
-.cfield label{font-size:12px;font-weight:700;color:#666}
-.cfield input,.cfield textarea{padding:7px 9px;font-size:14px;border-radius:7px;border:2px solid #ccc;background:white;color:#222;outline:none;width:100%}
-.cfield input:focus,.cfield textarea:focus{border-color:#f5d800}
+.cfield{display:flex;flex-direction:column;gap:4px}
+.cfield label{font-size:12px;font-weight:700;color:#666;white-space:nowrap}
+.cfield input,.cfield select,.cfield textarea{padding:10px 12px;font-size:15px;border-radius:8px;border:2px solid #ccc;background:white;color:#222;outline:none;width:100%;box-sizing:border-box;min-height:44px}
+.cfield input:focus,.cfield select:focus,.cfield textarea:focus{border-color:#f5d800}
+@media(max-width:600px){
+  .cust-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .cfield input,.cfield select,.cfield textarea{font-size:16px;padding:11px 12px;min-height:48px}
+  .cfield label{font-size:13px}
+}
+@media(max-width:400px){
+  .cust-grid{grid-template-columns:1fr;gap:8px}
+}
 
 /* SUMMARY */
 .summary-card{background:white;border-radius:12px;border:2px solid #1a1aff33;padding:14px;width:100%;max-width:720px}
 .summary-card h3{font-size:13px;font-weight:700;color:#555;margin-bottom:10px;border-bottom:1px solid #eee;padding-bottom:6px}
 .sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:400px){.sum-grid{grid-template-columns:repeat(2,1fr)}}
 .sum-box{background:#f5f5f5;border-radius:8px;padding:8px;text-align:center}
 .sum-box .sv{font-size:22px;font-weight:700}
 .sum-box .sl{font-size:11px;color:#888;margin-top:2px}
@@ -59,6 +70,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 
 /* DOOR INNER: inputs top-left compact, SVG right big */
 .door-inner{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:start}
+@media(max-width:600px){.door-inner{grid-template-columns:1fr;gap:8px}.svg-preview{order:-1}}
 
 /* 4 inputs in ONE ROW: 2 columns, 2 rows */
 .inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -228,7 +240,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
   .pg1-card .card-details .tl{font-size:8px!important;font-weight:700!important;min-width:48px!important;white-space:nowrap!important}
   .pg1-card .card-details .tv{font-size:8px!important;font-weight:700!important;padding:1px 3px!important;background:white!important;border:1px solid #ddd!important;border-radius:2px!important;min-width:24px!important;text-align:center!important}
   .pg1-card .card-details .tp,.pg1-card .card-details .te{font-size:7px!important;color:#888!important;font-weight:700!important}
-  .pg1-card .card-details .bold-val{font-size:11px!important;font-weight:900!important;min-width:28px!important}
+  .pg1-card .card-details .bold-val{font-size:9px!important;font-weight:900!important;min-width:22px!important}
   .pg1-card .card-details .red-val{color:#cc0000!important}
   .pg1-card .card-details .blue-val{color:#1a1aff!important}
 }
@@ -335,9 +347,9 @@ function formatWA(el){
 function calcOutstanding(){
   const total = parseFloat(document.getElementById('totalAmount').value)||0;
   const adv   = parseFloat(document.getElementById('advanceAmount').value)||0;
-  const out   = total - adv;
+  const out   = Math.max(0, total - adv);
   const field = document.getElementById('outstandingAmount');
-  field.value = out;
+  field.value = out.toFixed(2);
   // highlight negative in red
   if(out < 0){
     field.style.color='#cc0000';
@@ -566,7 +578,7 @@ function doPrint(){
         <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <text x="150" y="260" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="blue" transform="rotate(-90 150 260)">Base H: ${frac(dv.bh)}</text>
         <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(dv.bh)} + ${frac(dv.eh)} = ${frac(th)}</text>
+        <text x="75" y="310" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="red" transform="rotate(-90 75 310)">TH:${frac(th)}</text>
         <rect x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oLR}"/>
         <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}"/>
         <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}"/>
@@ -574,7 +586,7 @@ function doPrint(){
         <text x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="blue">Base W: ${frac(dv.bw)}</text>
         <line x1="220" y1="475" x2="520" y2="475" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red">Total W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
+        <text x="370" y="545" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="red">TW: ${frac(tw)}</text>
         <text x="370" y="285" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
 
@@ -608,7 +620,7 @@ function doPrint(){
         <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <text x="155" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000" transform="rotate(-90 155 265)">BASE H: ${frac(dv.bh)}</text>
         <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">TOTAL H: ${frac(dv.bh)} + ${frac(dv.eh)} = ${frac(th)}</text>
+        <text x="82" y="310" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 310)">TH:${frac(th)}</text>
         <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}"/>
         <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}"/>
         <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}"/>
@@ -616,7 +628,7 @@ function doPrint(){
         <text x="390" y="510" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
         <line x1="240" y1="525" x2="540" y2="525" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#1a1aff">TOTAL W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
+        <text x="390" y="594" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1a1aff">TW: ${frac(tw)}</text>
         <text x="410" y="335" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
     }
@@ -1010,7 +1022,7 @@ function doPrint(){
 
   /* ── TOTALS — screenshot style ── */
   .tot-row{display:flex;align-items:center;gap:3px;flex-wrap:nowrap}
-  .bold-val{font-weight:900!important;font-size:130%!important;min-width:34px!important;background:#fffbe6!important;border:2px solid currentColor!important}
+  .bold-val{font-weight:900!important;font-size:100%!important;min-width:28px!important;background:#fffbe6!important;border:2px solid currentColor!important}
   .red-val{color:#cc0000!important;border-color:#cc0000!important}
   .blue-val{color:#1a1aff!important;border-color:#1a1aff!important}
   .dk-val{color:#333!important}
@@ -1206,7 +1218,7 @@ function d1SVG(id){
   <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <text id="d1svgBH-${id}" x="155" y="275" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="blue" transform="rotate(-90 155 275)">Base Height: 45</text>
   <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
-  <text id="d1svgTH-${id}" x="65" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="32" fill="red" transform="rotate(-90 65 280)">Total Height: 84 1/2</text>
+  <text id="d1svgTH-${id}" x="65" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="red" transform="rotate(-90 65 280)">Total Height: 84 1/2</text>
   <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
   <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
   <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
@@ -1214,7 +1226,7 @@ function d1SVG(id){
   <text id="d1svgBW-${id}" x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="blue">Base Width: 39 1/2</text>
   <line x1="220" y1="470" x2="520" y2="470" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
-  <text id="d1svgTW-${id}" x="370" y="548" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="32" fill="red">Total Width: 48</text>
+  <text id="d1svgTW-${id}" x="370" y="548" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="15" fill="red">Total Width: 48</text>
   </svg>`;
 }
 function d1HTML(id){
@@ -1293,7 +1305,7 @@ function d2SVG(id){
   <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <text id="d2svgBH-${id}" x="158" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000" transform="rotate(-90 158 280)">BASE HEIGHT: 45</text>
   <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
-  <text id="d2svgTH-${id}" x="85" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff" transform="rotate(-90 85 280)">TOTAL HEIGHT: 84 1/2</text>
+  <text id="d2svgTH-${id}" x="85" y="280" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1a1aff" transform="rotate(-90 85 280)">TOTAL HEIGHT: 84 1/2</text>
   <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
   <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
   <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
@@ -1301,7 +1313,7 @@ function d2SVG(id){
   <text id="d2svgBW-${id}" x="390" y="512" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000">BASE WIDTH: 39 1/2</text>
   <line x1="240" y1="528" x2="540" y2="528" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <line x1="195" y1="565" x2="585" y2="565" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
-  <text id="d2svgTW-${id}" x="390" y="602" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff">TOTAL WIDTH: 48</text>
+  <text id="d2svgTW-${id}" x="390" y="602" text-anchor="middle" font-family="Arial" font-size="15" font-weight="bold" fill="#1a1aff">TOTAL WIDTH: 48</text>
   </svg>`;
 }
 function d2HTML(id){
