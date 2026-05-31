@@ -244,6 +244,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
     <button class="tbtn add2" onclick="addDoor('t2')">+ Door Type 2</button>
     <button class="tbtn" id="viewBtn" onclick="toggleView()">⇔ Side-by-Side</button>
     <button class="tbtn print" onclick="doPrint()">🖨 Print / PDF</button>
+    <button class="tbtn" style="background:#0f9d58;color:white;border-color:#0f9d58" onclick="window.open('https://docs.google.com/spreadsheets/d/1JJ7lEMVNBnSIQH1uwa_9Ea2bwlq3DwERkNQuuvSrOXw/edit','_blank')">📊 Open Sheet</button>
     <button class="tbtn whatsapp" onclick="sendWhatsApp()">💬 Send via WhatsApp</button>
   </div>
 </div>
@@ -576,7 +577,7 @@ function doPrint(){
         <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
         <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red">Total W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
         <text x="370" y="255" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="#111" opacity="0.25">${frac(th)}&quot; × ${frac(tw)}&quot; =</text>
-        <text x="370" y="295" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="34" fill="#111" opacity="0.25">${Math.round(th*tw)} sq&quot;</text>
+        <text x="370" y="295" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="34" fill="#111" opacity="0.25">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
 
     } else {
@@ -619,7 +620,7 @@ function doPrint(){
         <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
         <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#1a1aff">TOTAL W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
         <text x="410" y="305" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#111" opacity="0.25">${frac(th)}&quot; × ${frac(tw)}&quot; =</text>
-        <text x="410" y="345" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#111" opacity="0.25">${Math.round(th*tw)} sq&quot;</text>
+        <text x="410" y="345" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#111" opacity="0.25">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
     }
 
