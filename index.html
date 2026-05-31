@@ -532,8 +532,7 @@ function doPrint(){
         <text x="280" y="405" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000">WIDTH: ${frac(dv.w)}</text>
         <!-- Total H x W box -->
 
-        <text x="280" y="170" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#111" opacity="0.25">${frac(dv.h)}&quot; × ${frac(dv.w)}&quot; =</text>
-        <text x="280" y="200" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#111" opacity="0.25">${Math.round(dv.h*dv.w)} sq&quot;</text>
+        <text x="280" y="190" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#111" opacity="0.22">${(dv.h*dv.w/144).toFixed(2)} sq ft</text>
       </svg>`;
 
     } else if(dv.type==='t1'){
@@ -1152,6 +1151,7 @@ function wgSVG(id){
   <text id="wsvgH-${id}" x="22" y="310" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000" transform="rotate(-90 22 310)">HEIGHT: 84 1/2</text>
   <line x1="160" y1="620" x2="400" y2="620" stroke="#f5d800" stroke-width="4" marker-start="url(#ay${id})" marker-end="url(#ay${id})"/>
   <text id="wsvgW-${id}" x="280" y="658" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000">WIDTH: 39 1/2</text>
+  <text id="wsvgArea-${id}" x="280" y="310" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">28.00 sq ft</text>
   </svg>`;
 }
 function wgHTML(id){
@@ -1188,6 +1188,7 @@ function wgUpdate(id){
   document.getElementById('wg-ow-'+id).textContent=frac(w);
   document.getElementById('wsvgH-'+id).textContent='HEIGHT: '+frac(h);
   document.getElementById('wsvgW-'+id).textContent='WIDTH: '+frac(w);
+  document.getElementById('wsvgArea-'+id).textContent=(h*w/144).toFixed(2)+' sq ft';
 }
 
 /* ══ DOOR TYPE 1 ══ */
