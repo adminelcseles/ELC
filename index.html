@@ -578,7 +578,7 @@ function doPrint(){
         <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <text x="150" y="260" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="blue" transform="rotate(-90 150 260)">Base H: ${frac(dv.bh)}</text>
         <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="75" y="310" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="red" transform="rotate(-90 75 310)">TH:${frac(th)}</text>
+        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(th)}</text>
         <rect x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oLR}"/>
         <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}"/>
         <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}"/>
@@ -586,7 +586,7 @@ function doPrint(){
         <text x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="blue">Base W: ${frac(dv.bw)}</text>
         <line x1="220" y1="475" x2="520" y2="475" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="370" y="545" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="red">TW: ${frac(tw)}</text>
+        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red">Total W: ${frac(tw)}</text>
         <text x="370" y="285" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
 
@@ -620,7 +620,7 @@ function doPrint(){
         <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <text x="155" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000" transform="rotate(-90 155 265)">BASE H: ${frac(dv.bh)}</text>
         <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="82" y="310" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 310)">TH:${frac(th)}</text>
+        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">Total H: ${frac(th)}</text>
         <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}"/>
         <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}"/>
         <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}"/>
@@ -628,7 +628,7 @@ function doPrint(){
         <text x="390" y="510" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
         <line x1="240" y1="525" x2="540" y2="525" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="390" y="594" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold" fill="#1a1aff">TW: ${frac(tw)}</text>
+        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff">Total W: ${frac(tw)}</text>
         <text x="410" y="335" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
     }
