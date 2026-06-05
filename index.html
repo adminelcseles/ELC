@@ -1319,7 +1319,7 @@ function d1CalcCost(id){
   const ew = parseFloat(document.getElementById('d1-ew-'+id).value)||0;
   const th = bh + eh;
   const tw = bw + ew;
-  const area = (th * tw) / 144;
+  const area = Math.round((th * tw) / 144 * 100) / 100;
   const total = motorPrice + (area * sqftPrice);
   d.motorType  = motorType;
   d.motorPrice = motorPrice;
