@@ -1191,8 +1191,8 @@ function wgHTML(id){
   return hdr(id,'wg')+`<div class="door-inner">
   <div class="door-inputs">
     <div class="inputs-grid">
-      <div class="finput"><label>Height</label><input type="number" id="wg-h-${id}" value="84.5" step="0.5" oninput="wgUpdate(${id})"/></div>
-      <div class="finput"><label>Width</label><input type="number" id="wg-w-${id}" value="39.5" step="0.5" oninput="wgUpdate(${id})"/></div>
+      <div class="finput"><label>Height</label><input type="number" id="wg-h-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
+      <div class="finput"><label>Width</label><input type="number" id="wg-w-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
     </div>
     <div class="extra-controls">
       <div class="ctrl-row">
@@ -1217,8 +1217,7 @@ function wgToggle(id,c){
 function wgUpdate(id){
   const hEl=document.getElementById('wg-h-'+id);
   const wEl=document.getElementById('wg-w-'+id);
-  if(hEl&&hEl.value==='')hEl.value='84.5';
-  if(wEl&&wEl.value==='')wEl.value='39.5';
+
   const h=parseFloat(hEl.value)||0;
   const w=parseFloat(wEl.value)||0;
   document.getElementById('wg-oh-'+id).textContent=frac(h);
@@ -1259,10 +1258,10 @@ function d1HTML(id){
   return hdr(id,'t1')+`<div class="door-inner">
   <div class="door-inputs">
     <div class="inputs-grid">
-      <div class="finput"><label>Base Height</label><input type="number" id="d1-bh-${id}" value="45" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
-      <div class="finput"><label>Extra Height</label><input type="number" id="d1-eh-${id}" value="39.5" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
-      <div class="finput"><label>Base Width</label><input type="number" id="d1-bw-${id}" value="39.5" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
-      <div class="finput"><label>Extra Width</label><input type="number" id="d1-ew-${id}" value="8.5" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Base Height</label><input type="number" id="d1-bh-${id}" value="" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Extra Height</label><input type="number" id="d1-eh-${id}" value="" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Base Width</label><input type="number" id="d1-bw-${id}" value="" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Extra Width</label><input type="number" id="d1-ew-${id}" value="" step="0.5" autocomplete="off" oninput="d1Update(${id})"/></div>
     </div>
     <div class="extra-controls">
       <div class="ctrl-row">
@@ -1342,10 +1341,7 @@ function d1Update(id){
   const ehEl=document.getElementById('d1-eh-'+id);
   const bwEl=document.getElementById('d1-bw-'+id);
   const ewEl=document.getElementById('d1-ew-'+id);
-  if(bhEl&&bhEl.value==='')bhEl.value='45';
-  if(ehEl&&ehEl.value==='')ehEl.value='39.5';
-  if(bwEl&&bwEl.value==='')bwEl.value='39.5';
-  if(ewEl&&ewEl.value==='')ewEl.value='8.5';
+
   const bh=parseFloat(bhEl.value)||0;
   const bw=parseFloat(bwEl.value)||0;
   const eh=parseFloat(ehEl.value)||0;
@@ -1396,10 +1392,10 @@ function d2HTML(id){
   return hdr(id,'t2')+`<div class="door-inner">
   <div class="door-inputs">
     <div class="inputs-grid">
-      <div class="finput"><label>Base Height</label><input type="number" id="d2-bh-${id}" value="45" step="0.5" oninput="d2Update(${id})"/></div>
-      <div class="finput"><label>Extra Height</label><input type="number" id="d2-eh-${id}" value="39.5" step="0.5" oninput="d2Update(${id})"/></div>
-      <div class="finput"><label>Base Width</label><input type="number" id="d2-bw-${id}" value="39.5" step="0.5" oninput="d2Update(${id})"/></div>
-      <div class="finput"><label>Extra Width</label><input type="number" id="d2-ew-${id}" value="8.5" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Base Height</label><input type="number" id="d2-bh-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Extra Height</label><input type="number" id="d2-eh-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Base Width</label><input type="number" id="d2-bw-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Extra Width</label><input type="number" id="d2-ew-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
     </div>
     <div class="extra-controls">
       <div class="ctrl-row">
@@ -1444,10 +1440,7 @@ function d2Update(id){
   const ehEl2=document.getElementById('d2-eh-'+id);
   const bwEl2=document.getElementById('d2-bw-'+id);
   const ewEl2=document.getElementById('d2-ew-'+id);
-  if(bhEl2&&bhEl2.value==='')bhEl2.value='45';
-  if(ehEl2&&ehEl2.value==='')ehEl2.value='39.5';
-  if(bwEl2&&bwEl2.value==='')bwEl2.value='39.5';
-  if(ewEl2&&ewEl2.value==='')ewEl2.value='8.5';
+
   const bh=parseFloat(bhEl2.value)||0;
   const bw=parseFloat(bwEl2.value)||0;
   const eh=parseFloat(ehEl2.value)||0;
