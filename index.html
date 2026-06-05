@@ -1147,7 +1147,8 @@ function deleteDoor(id){
 function hdr(id,type){
   const lbl=type==='wg'?'Wicket Gate':type==='t1'?'Door Type 1':'Door Type 2';
   const cls=type==='wg'?'lblwg':type==='t1'?'lbl1':'lbl2';
-  return`<div class="door-header"><span class="drag-handle">⠿</span><span class="door-label ${cls}">${lbl}</span><button class="del-btn" onclick="deleteDoor(${id})">✕</button></div>`;
+  const titleId = type==='t1'?`id="d1-title-${id}"`:(type==='t2'?`id="d2-title-${id}"`:``); 
+  return`<div class="door-header"><span class="drag-handle">⠿</span><span class="door-label ${cls}" ${titleId}>${lbl}</span><button class="del-btn" onclick="deleteDoor(${id})">✕</button></div>`;
 }
 
 /* ══ WICKET GATE ══ */
@@ -1227,6 +1228,7 @@ function d1SVG(id){
   <line x1="220" y1="470" x2="520" y2="470" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
   <text id="d1svgTW-${id}" x="370" y="560" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="red">Total W: 48</text>
+  <text id="d1svgArea-${id}" x="370" y="295" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">28.00 sq ft</text>
   </svg>`;
 }
 function d1HTML(id){
@@ -1251,10 +1253,28 @@ function d1HTML(id){
         <button class="box-btn yellow active" id="d1-bRY-${id}" onclick="d1Box(${id},'RY')">R Yel</button>
         <button class="box-btn red active" id="d1-bRR-${id}" onclick="d1Box(${id},'RR')">R Red</button>
       </div>
+      <div class="ctrl-row" style="flex-wrap:wrap;gap:6px;margin-top:6px">
+        <select id="d1-motorType-${id}" onchange="d1CalcCost(${id})" style="flex:2;min-width:140px;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px;font-weight:600">
+          <option value="">Motor Type</option>
+          <option value="Smart">Smart</option>
+          <option value="Heavy Duty">Heavy Duty</option>
+          <option value="Shutter 600kg">Shutter 600kg</option>
+          <option value="Shutter 800kg">Shutter 800kg</option>
+          <option value="Shutter 1000kg">Shutter 1000kg</option>
+        </select>
+        <input type="number" id="d1-motorPrice-${id}" placeholder="Motor Price (Rs)" oninput="d1CalcCost(${id})" style="flex:1;min-width:120px;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px"/>
+      </div>
+      <div class="ctrl-row" style="gap:6px;margin-top:4px">
+        <input type="number" id="d1-sqftPrice-${id}" placeholder="Price per sq ft (Rs)" oninput="d1CalcCost(${id})" style="flex:1;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px"/>
+      </div>
     </div>
     <div class="totals">
       <div class="total-row"><span class="tlabel red">TOTAL H:</span><span class="tval" id="d1-dbh-${id}">45</span><span class="tplus">+</span><span class="tval" id="d1-deh-${id}">39½</span><span class="teq">=</span><span class="tval" id="d1-dth-${id}">84½</span></div>
       <div class="total-row"><span class="tlabel blue">TOTAL W:</span><span class="tval" id="d1-dbw-${id}">39½</span><span class="tplus">+</span><span class="tval" id="d1-dew-${id}">8½</span><span class="teq">=</span><span class="tval" id="d1-dtw-${id}">48</span></div>
+      <div class="total-row" style="margin-top:6px;background:#1a2340;border-radius:7px;padding:6px 10px">
+        <span class="tlabel" style="color:#f5d800;font-size:13px">TOTAL COST =</span>
+        <span id="d1-totalCost-${id}" style="color:#f5d800;font-weight:900;font-size:16px;margin-left:8px">Rs. 0/=</span>
+      </div>
     </div>
   </div>
   <div class="svg-preview">${d1SVG(id)}</div>
@@ -1266,6 +1286,25 @@ function d1Motor(id,s){
   document.getElementById('d1-mR-'+id).classList.toggle('active',s==='Right');
   document.getElementById('d1cL-'+id).setAttribute('fill',s==='Left'?'#f5d800':'white');
   document.getElementById('d1cR-'+id).setAttribute('fill',s==='Right'?'#f5d800':'white');
+}
+function d1CalcCost(id){
+  const d = doors.find(x=>x.id===id);
+  const motorType  = document.getElementById('d1-motorType-'+id).value;
+  const motorPrice = parseFloat(document.getElementById('d1-motorPrice-'+id).value)||0;
+  const sqftPrice  = parseFloat(document.getElementById('d1-sqftPrice-'+id).value)||0;
+  const th = (d.bh||0) + (d.eh||0);
+  const tw = (d.bw||0) + (d.ew||0);
+  const area = (th * tw) / 144;
+  const total = motorPrice + (area * sqftPrice);
+  d.motorType  = motorType;
+  d.motorPrice = motorPrice;
+  d.sqftPrice  = sqftPrice;
+  d.totalCost  = total;
+  document.getElementById('d1-totalCost-'+id).textContent =
+    'Rs. ' + Math.round(total).toLocaleString() + '/=';
+  // Update card title
+  const title = document.getElementById('d1-title-'+id);
+  if(title) title.textContent = 'DOOR TYPE 1 ('+String(doors.findIndex(x=>x.id===id)+1).toString().padStart(2,'0')+') TOTAL COST = Rs. '+Math.round(total).toLocaleString()+'/=';
 }
 function d1Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
@@ -1288,6 +1327,8 @@ function d1Update(id){
   document.getElementById('d1svgTH-'+id).textContent='Total H: '+frac(th);
   document.getElementById('d1svgBW-'+id).textContent='Base Width: '+frac(bw);
   document.getElementById('d1svgTW-'+id).textContent='Total W: '+frac(tw);
+  document.getElementById('d1svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
+  d1CalcCost(id);
 }
 
 /* ══ DOOR TYPE 2 ══ */
@@ -1314,6 +1355,7 @@ function d2SVG(id){
   <line x1="240" y1="528" x2="540" y2="528" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <line x1="195" y1="565" x2="585" y2="565" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
   <text id="d2svgTW-${id}" x="390" y="614" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff">Total W: 48</text>
+  <text id="d2svgArea-${id}" x="390" y="345" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">28.00 sq ft</text>
   </svg>`;
 }
 function d2HTML(id){
@@ -1379,6 +1421,7 @@ function d2Update(id){
   document.getElementById('d2svgTH-'+id).textContent='Total H: '+frac(th);
   document.getElementById('d2svgBW-'+id).textContent='BASE WIDTH: '+frac(bw);
   document.getElementById('d2svgTW-'+id).textContent='Total W: '+frac(tw);
+  if(document.getElementById('d2svgArea-'+id)) document.getElementById('d2svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
 }
 </script>
 </body>
