@@ -7,10 +7,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14px 8px;display:flex;flex-direction:column;gap:12px;align-items:center}
-@media(max-width:600px){body{padding:8px 4px;gap:8px}}
 
 .top-bar{display:flex;align-items:center;gap:8px;width:100%;max-width:720px;flex-wrap:wrap}
-@media(max-width:600px){.top-bar{gap:6px}.tbtn{font-size:13px;padding:8px 12px;min-height:42px}}
 .app-title{font-size:17px;font-weight:700;color:#222}
 .top-btns{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
 .tbtn{padding:7px 13px;font-size:12px;font-weight:700;border-radius:8px;border:2px solid #ccc;background:white;color:#333;cursor:pointer;transition:all .15s}
@@ -19,31 +17,20 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 .tbtn.add1{background:#1a1aff;color:white;border-color:#1a1aff}
 .tbtn.add2{background:#cc0000;color:white;border-color:#cc0000}
 .tbtn.print{background:#1a7a1a;color:white;border-color:#1a7a1a}
-.tbtn.whatsapp{background:#25D366;color:white;border-color:#1db954}
-.tbtn.whatsapp:hover{background:#1db954}
 .tbtn.side-on{background:#f5d800;color:#222;border-color:#e6c800}
 
 /* CUSTOMER */
-.cust-card{background:white;border-radius:12px;border:2px solid #f5d80099;padding:14px 12px;width:100%;max-width:720px;box-sizing:border-box}
+.cust-card{background:white;border-radius:12px;border:2px solid #f5d80099;padding:14px;width:100%;max-width:720px}
 .cust-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.cfield{display:flex;flex-direction:column;gap:4px}
-.cfield label{font-size:12px;font-weight:700;color:#666;white-space:nowrap}
-.cfield input,.cfield select,.cfield textarea{padding:10px 12px;font-size:15px;border-radius:8px;border:2px solid #ccc;background:white;color:#222;outline:none;width:100%;box-sizing:border-box;min-height:44px}
-.cfield input:focus,.cfield select:focus,.cfield textarea:focus{border-color:#f5d800}
-@media(max-width:600px){
-  .cust-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .cfield input,.cfield select,.cfield textarea{font-size:16px;padding:11px 12px;min-height:48px}
-  .cfield label{font-size:13px}
-}
-@media(max-width:400px){
-  .cust-grid{grid-template-columns:1fr;gap:8px}
-}
+.cfield{display:flex;flex-direction:column;gap:3px}
+.cfield label{font-size:12px;font-weight:700;color:#666}
+.cfield input,.cfield textarea{padding:7px 9px;font-size:14px;border-radius:7px;border:2px solid #ccc;background:white;color:#222;outline:none;width:100%}
+.cfield input:focus,.cfield textarea:focus{border-color:#f5d800}
 
 /* SUMMARY */
 .summary-card{background:white;border-radius:12px;border:2px solid #1a1aff33;padding:14px;width:100%;max-width:720px}
 .summary-card h3{font-size:13px;font-weight:700;color:#555;margin-bottom:10px;border-bottom:1px solid #eee;padding-bottom:6px}
 .sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-@media(max-width:400px){.sum-grid{grid-template-columns:repeat(2,1fr)}}
 .sum-box{background:#f5f5f5;border-radius:8px;padding:8px;text-align:center}
 .sum-box .sv{font-size:22px;font-weight:700}
 .sum-box .sl{font-size:11px;color:#888;margin-top:2px}
@@ -70,7 +57,6 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 
 /* DOOR INNER: inputs top-left compact, SVG right big */
 .door-inner{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:start}
-@media(max-width:600px){.door-inner{grid-template-columns:1fr;gap:8px}.svg-preview{order:-1}}
 
 /* 4 inputs in ONE ROW: 2 columns, 2 rows */
 .inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -240,7 +226,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
   .pg1-card .card-details .tl{font-size:8px!important;font-weight:700!important;min-width:48px!important;white-space:nowrap!important}
   .pg1-card .card-details .tv{font-size:8px!important;font-weight:700!important;padding:1px 3px!important;background:white!important;border:1px solid #ddd!important;border-radius:2px!important;min-width:24px!important;text-align:center!important}
   .pg1-card .card-details .tp,.pg1-card .card-details .te{font-size:7px!important;color:#888!important;font-weight:700!important}
-  .pg1-card .card-details .bold-val{font-size:9px!important;font-weight:900!important;min-width:22px!important}
+  .pg1-card .card-details .bold-val{font-size:11px!important;font-weight:900!important;min-width:28px!important}
   .pg1-card .card-details .red-val{color:#cc0000!important}
   .pg1-card .card-details .blue-val{color:#1a1aff!important}
 }
@@ -255,10 +241,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
     <button class="tbtn add1" onclick="addDoor('t1')">+ Door Type 1</button>
     <button class="tbtn add2" onclick="addDoor('t2')">+ Door Type 2</button>
     <button class="tbtn" id="viewBtn" onclick="toggleView()">⇔ Side-by-Side</button>
-    <button class="tbtn" style="background:#e74c3c;color:white;border-color:#c0392b" onclick="if(confirm('සියලු data clear කර නව order එකක් start කරන්නද?'))resetAll()">🔄 New Order</button>
     <button class="tbtn print" onclick="doPrint()">🖨 Print / PDF</button>
-    <button class="tbtn" style="background:#0f9d58;color:white;border-color:#0f9d58" onclick="window.open('https://docs.google.com/spreadsheets/d/1JJ7lEMVNBnSIQH1uwa_9Ea2bwlq3DwERkNQuuvSrOXw/edit','_blank')">📊 Open Sheet</button>
-    <button class="tbtn whatsapp" onclick="sendWhatsApp()">💬 Send via WhatsApp</button>
   </div>
 </div>
 
@@ -322,36 +305,16 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 let doors=[],nextId=1,dragSrc=null;
 
 window.addEventListener('load', function(){
-  resetAll();
-});
-
-function resetAll(){
-  // Clear all customer fields
-  ['custName','custWhatsapp','custAddress','totalAmount','advanceAmount','outstandingAmount','orderNotes'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el){ el.value=''; }
-  });
-  const ps = document.getElementById('paymentStatus');
-  if(ps) ps.value='Cash';
-
-  // Set today's date
   const dateField = document.getElementById('orderDate');
-  if(dateField) dateField.valueAsDate = new Date();
+  if(dateField) dateField.valueAsDate=new Date();
 
-  // Auto-generate new Order ID
+  // Auto-generate Order ID: ELC-YYYY-NNNN-IU
   const year = new Date().getFullYear();
   const stored = parseInt(localStorage.getItem('elc_order_seq')||'0') + 1;
   localStorage.setItem('elc_order_seq', stored);
   const ordEl = document.getElementById('orderNum');
   if(ordEl) ordEl.value = 'ELC-' + year + '-' + String(stored).padStart(4,'0') + '-IU';
-
-  // Remove all doors
-  doors = [];
-  nextId = 1;
-  document.getElementById('door-list').innerHTML = '';
-  document.getElementById('emptyMsg').style.display = '';
-  updateSummary();
-}
+});
 
 function formatWA(el){
   let v = el.value.replace(/\D/g,'');
@@ -368,9 +331,9 @@ function formatWA(el){
 function calcOutstanding(){
   const total = parseFloat(document.getElementById('totalAmount').value)||0;
   const adv   = parseFloat(document.getElementById('advanceAmount').value)||0;
-  const out   = Math.max(0, total - adv);
+  const out   = total - adv;
   const field = document.getElementById('outstandingAmount');
-  field.value = out.toFixed(2);
+  field.value = out;
   // highlight negative in red
   if(out < 0){
     field.style.color='#cc0000';
@@ -396,59 +359,6 @@ function toggleView(){
   const b=document.getElementById('viewBtn');
   b.textContent=sideView?'☰ Stack View':'⇔ Side-by-Side';
   b.classList.toggle('side-on',sideView);
-}
-
-function sendWhatsApp(){
-  const custName    = document.getElementById('custName').value      || '';
-  const custWhatsapp= document.getElementById('custWhatsapp').value  || '';
-  const orderNum    = document.getElementById('orderNum').value      || '';
-  const orderDate   = document.getElementById('orderDate').value     || '';
-  const totalAmount = document.getElementById('totalAmount').value   || '0';
-  const advanceAmt  = document.getElementById('advanceAmount').value || '0';
-  const payStatus   = document.getElementById('paymentStatus').value || 'Cash';
-  const outstanding = (parseFloat(totalAmount)||0) - (parseFloat(advanceAmt)||0);
-
-  if(!custWhatsapp || custWhatsapp === '-'){
-    alert('WhatsApp number එකක් enter කරන්න!');
-    return;
-  }
-
-  // Clean phone number - remove spaces, dashes, brackets
-  let phone = custWhatsapp.replace(/[\s\-\(\)]/g,'');
-  // Sri Lanka number: 07x -> 947x
-  if(phone.startsWith('0')){ phone = '94' + phone.slice(1); }
-  if(!phone.startsWith('+')){
-    if(!phone.startsWith('94')){ phone = '94' + phone; }
-  } else {
-    phone = phone.slice(1);
-  }
-
-  const totalDoors = doors.length;
-  const t1 = doors.filter(d=>d.type==='t1').length;
-  const t2 = doors.filter(d=>d.type==='t2').length;
-  const wg = doors.filter(d=>d.type==='wg').length;
-
-  const msg =
-`🚪 *ELCARDO DOOR PRO*
-━━━━━━━━━━━━━━━━━━━
-👤 Customer: ${custName}
-📋 Order No: ${orderNum}
-📅 Date: ${orderDate}
-━━━━━━━━━━━━━━━━━━━
-🚪 Total Doors: ${totalDoors}${t1>0?`
-   • Door Type 1: ${t1}`:''}${t2>0?`
-   • Door Type 2: ${t2}`:''}${wg>0?`
-   • Wicket Gate: ${wg}`:''}
-━━━━━━━━━━━━━━━━━━━
-💰 Total Amount: Rs. ${(parseFloat(totalAmount)||0).toLocaleString()}/=
-✅ Advance Paid: Rs. ${(parseFloat(advanceAmt)||0).toLocaleString()}/=
-⏳ Outstanding: Rs. ${outstanding.toLocaleString()}/=
-💳 Payment: ${payStatus}
-━━━━━━━━━━━━━━━━━━━
-Thank you for choosing ELCARDO! 🙏`;
-
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-  window.open(url, '_blank');
 }
 
 function doPrint(){
@@ -565,7 +475,8 @@ function doPrint(){
         <text x="280" y="405" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000">WIDTH: ${frac(dv.w)}</text>
         <!-- Total H x W box -->
 
-        <text x="280" y="190" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#111" opacity="0.22">${(dv.h*dv.w/144).toFixed(2)} sq ft</text>
+        <text x="280" y="170" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#111" opacity="0.25">${frac(dv.h)}&quot; × ${frac(dv.w)}&quot; =</text>
+        <text x="280" y="200" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#111" opacity="0.25">${Math.round(dv.h*dv.w)} sq&quot;</text>
       </svg>`;
 
     } else if(dv.type==='t1'){
@@ -599,7 +510,7 @@ function doPrint(){
         <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <text x="150" y="260" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="blue" transform="rotate(-90 150 260)">Base H: ${frac(dv.bh)}</text>
         <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(th)}</text>
+        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(dv.bh)} + ${frac(dv.eh)} = ${frac(th)}</text>
         <rect x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oLR}"/>
         <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}"/>
         <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}"/>
@@ -607,8 +518,9 @@ function doPrint(){
         <text x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="blue">Base W: ${frac(dv.bw)}</text>
         <line x1="220" y1="475" x2="520" y2="475" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red">Total W: ${frac(tw)}</text>
-        <text x="370" y="285" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
+        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red">Total W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
+        <text x="370" y="255" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="#111" opacity="0.25">${frac(th)}&quot; × ${frac(tw)}&quot; =</text>
+        <text x="370" y="295" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="34" fill="#111" opacity="0.25">${Math.round(th*tw)} sq&quot;</text>
       </svg>`;
 
     } else {
@@ -641,7 +553,7 @@ function doPrint(){
         <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <text x="155" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000" transform="rotate(-90 155 265)">BASE H: ${frac(dv.bh)}</text>
         <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">Total H: ${frac(th)}</text>
+        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">TOTAL H: ${frac(dv.bh)} + ${frac(dv.eh)} = ${frac(th)}</text>
         <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}"/>
         <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}"/>
         <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}"/>
@@ -649,8 +561,9 @@ function doPrint(){
         <text x="390" y="510" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
         <line x1="240" y1="525" x2="540" y2="525" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff">Total W: ${frac(tw)}</text>
-        <text x="410" y="335" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
+        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#1a1aff">TOTAL W: ${frac(dv.ew)} + ${frac(dv.bw)} + ${frac(dv.ew)} = ${frac(tw)}</text>
+        <text x="410" y="305" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#111" opacity="0.25">${frac(th)}&quot; × ${frac(tw)}&quot; =</text>
+        <text x="410" y="345" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#111" opacity="0.25">${Math.round(th*tw)} sq&quot;</text>
       </svg>`;
     }
 
@@ -1043,7 +956,7 @@ function doPrint(){
 
   /* ── TOTALS — screenshot style ── */
   .tot-row{display:flex;align-items:center;gap:3px;flex-wrap:nowrap}
-  .bold-val{font-weight:900!important;font-size:100%!important;min-width:28px!important;background:#fffbe6!important;border:2px solid currentColor!important}
+  .bold-val{font-weight:900!important;font-size:130%!important;min-width:34px!important;background:#fffbe6!important;border:2px solid currentColor!important}
   .red-val{color:#cc0000!important;border-color:#cc0000!important}
   .blue-val{color:#1a1aff!important;border-color:#1a1aff!important}
   .dk-val{color:#333!important}
@@ -1075,50 +988,7 @@ function doPrint(){
   pw.document.close();
   pw.focus();
   setTimeout(()=>{pw.print();},800);
-
-  // Auto-save to Google Sheet
-  saveToSheet(custName, custWhatsapp, custAddress, orderNum, orderDate,
-              totalAmount, advanceAmt, outstanding, payStatus, allDoors);
 }
-
-// ════════════════════════════════════════════════════════
-//  GOOGLE SHEETS INTEGRATION
-// ════════════════════════════════════════════════════════
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyS79RZHsnYJL4XO507RHeP0vZ3qUro9V3VWm-0D50kKbhHxHI2MDDJsNMur4oSIz8y/exec';
-
-function saveToSheet(custName, custWhatsapp, custAddress, orderNum, orderDate,
-                     totalAmount, advanceAmt, outstanding, payStatus, allDoors) {
-  if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
-
-  const payload = {
-    custName, custWhatsapp, custAddress,
-    orderNum, orderDate,
-    totalAmt: totalAmount, advanceAmt, outstandingAmt: outstanding,
-    payStatus,
-    savedAt: new Date().toISOString(),
-    doors: allDoors.map((d, i) => {
-      const base = { doorIndex: i + 1, type: d.type };
-      if (d.type === 'wg') {
-        return { ...base, label: 'Wicket Gate', totalH: d.h, totalW: d.w };
-      } else {
-        const th = d.bh + d.eh, tw = d.bw + d.ew;
-        return { ...base,
-          label: d.type === 't1' ? 'Door Type 1' : 'Door Type 2',
-          baseH: d.bh, extraH: d.eh, totalH: th,
-          baseW: d.bw, extraW: d.ew, totalW: tw,
-          motor: d.motor || '', combo: d.combo || ''
-        };
-      }
-    })
-  };
-
-  fetch(SCRIPT_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).catch(err => console.error('Sheet save failed:', err));
-}
-
 function updateSummary(){
   document.getElementById('sum-total').textContent=doors.length;
   document.getElementById('sum-wg').textContent=doors.filter(d=>d.type==='wg').length;
@@ -1184,15 +1054,14 @@ function wgSVG(id){
   <text id="wsvgH-${id}" x="22" y="310" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000" transform="rotate(-90 22 310)">HEIGHT: 84 1/2</text>
   <line x1="160" y1="620" x2="400" y2="620" stroke="#f5d800" stroke-width="4" marker-start="url(#ay${id})" marker-end="url(#ay${id})"/>
   <text id="wsvgW-${id}" x="280" y="658" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000">WIDTH: 39 1/2</text>
-  <text id="wsvgArea-${id}" x="280" y="310" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">28.00 sq ft</text>
   </svg>`;
 }
 function wgHTML(id){
   return hdr(id,'wg')+`<div class="door-inner">
   <div class="door-inputs">
     <div class="inputs-grid">
-      <div class="finput"><label>Height</label><input type="number" id="wg-h-${id}" value="84.5" step="0.5" oninput="wgUpdate(${id})"/></div>
-      <div class="finput"><label>Width</label><input type="number" id="wg-w-${id}" value="39.5" step="0.5" oninput="wgUpdate(${id})"/></div>
+      <div class="finput"><label>Height</label><input type="number" id="wg-h-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
+      <div class="finput"><label>Width</label><input type="number" id="wg-w-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
     </div>
     <div class="extra-controls">
       <div class="ctrl-row">
@@ -1217,11 +1086,10 @@ function wgToggle(id,c){
 function wgUpdate(id){
   const h=parseFloat(document.getElementById('wg-h-'+id).value)||0;
   const w=parseFloat(document.getElementById('wg-w-'+id).value)||0;
-  document.getElementById('wg-oh-'+id).textContent=frac(h);
-  document.getElementById('wg-ow-'+id).textContent=frac(w);
+  document.getElementById('wg-oh-'+id).textContent=h?frac(h):'';
+  document.getElementById('wg-ow-'+id).textContent=w?frac(w):'';
   document.getElementById('wsvgH-'+id).textContent='HEIGHT: '+frac(h);
   document.getElementById('wsvgW-'+id).textContent='WIDTH: '+frac(w);
-  document.getElementById('wsvgArea-'+id).textContent=(h*w/144).toFixed(2)+' sq ft';
 }
 
 /* ══ DOOR TYPE 1 ══ */
@@ -1239,7 +1107,7 @@ function d1SVG(id){
   <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <text id="d1svgBH-${id}" x="155" y="275" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="blue" transform="rotate(-90 155 275)">Base Height: 45</text>
   <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
-  <text id="d1svgTH-${id}" x="100" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="red" transform="rotate(-90 100 280)">Total H: 84 1/2</text>
+  <text id="d1svgTH-${id}" x="65" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="32" fill="red" transform="rotate(-90 65 280)">Total Height: 84 1/2</text>
   <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
   <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
   <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
@@ -1247,18 +1115,17 @@ function d1SVG(id){
   <text id="d1svgBW-${id}" x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="blue">Base Width: 39 1/2</text>
   <line x1="220" y1="470" x2="520" y2="470" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
-  <text id="d1svgTW-${id}" x="370" y="560" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="red">Total W: 48</text>
-  <text id="d1svgArea-${id}" x="370" y="295" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">28.00 sq ft</text>
+  <text id="d1svgTW-${id}" x="370" y="548" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="32" fill="red">Total Width: 48</text>
   </svg>`;
 }
 function d1HTML(id){
   return hdr(id,'t1')+`<div class="door-inner">
   <div class="door-inputs">
     <div class="inputs-grid">
-      <div class="finput"><label>Base Height</label><input type="number" id="d1-bh-${id}" value="45" step="0.5" oninput="d1Update(${id})"/></div>
-      <div class="finput"><label>Extra Height</label><input type="number" id="d1-eh-${id}" value="39.5" step="0.5" oninput="d1Update(${id})"/></div>
-      <div class="finput"><label>Base Width</label><input type="number" id="d1-bw-${id}" value="39.5" step="0.5" oninput="d1Update(${id})"/></div>
-      <div class="finput"><label>Extra Width</label><input type="number" id="d1-ew-${id}" value="8.5" step="0.5" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Base Height</label><input type="number" id="d1-bh-${id}" value="" step="0.5" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Extra Height</label><input type="number" id="d1-eh-${id}" value="" step="0.5" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Base Width</label><input type="number" id="d1-bw-${id}" value="" step="0.5" oninput="d1Update(${id})"/></div>
+      <div class="finput"><label>Extra Width</label><input type="number" id="d1-ew-${id}" value="" step="0.5" oninput="d1Update(${id})"/></div>
     </div>
     <div class="extra-controls">
       <div class="ctrl-row">
@@ -1273,28 +1140,10 @@ function d1HTML(id){
         <button class="box-btn yellow active" id="d1-bRY-${id}" onclick="d1Box(${id},'RY')">R Yel</button>
         <button class="box-btn red active" id="d1-bRR-${id}" onclick="d1Box(${id},'RR')">R Red</button>
       </div>
-      <div class="ctrl-row" style="flex-wrap:wrap;gap:6px;margin-top:6px">
-        <select id="d1-motorType-${id}" onchange="d1CalcCost(${id})" style="flex:2;min-width:140px;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px;font-weight:600">
-          <option value="">Motor Type</option>
-          <option value="Smart">Smart</option>
-          <option value="Heavy Duty">Heavy Duty</option>
-          <option value="Shutter 600kg">Shutter 600kg</option>
-          <option value="Shutter 800kg">Shutter 800kg</option>
-          <option value="Shutter 1000kg">Shutter 1000kg</option>
-        </select>
-        <input type="number" id="d1-motorPrice-${id}" placeholder="Motor Price (Rs)" oninput="d1CalcCost(${id})" style="flex:1;min-width:120px;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px"/>
-      </div>
-      <div class="ctrl-row" style="gap:6px;margin-top:4px">
-        <input type="number" id="d1-sqftPrice-${id}" placeholder="Price per sq ft (Rs)" oninput="d1CalcCost(${id})" style="flex:1;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px"/>
-      </div>
     </div>
     <div class="totals">
       <div class="total-row"><span class="tlabel red">TOTAL H:</span><span class="tval" id="d1-dbh-${id}">45</span><span class="tplus">+</span><span class="tval" id="d1-deh-${id}">39½</span><span class="teq">=</span><span class="tval" id="d1-dth-${id}">84½</span></div>
       <div class="total-row"><span class="tlabel blue">TOTAL W:</span><span class="tval" id="d1-dbw-${id}">39½</span><span class="tplus">+</span><span class="tval" id="d1-dew-${id}">8½</span><span class="teq">=</span><span class="tval" id="d1-dtw-${id}">48</span></div>
-      <div class="total-row" style="margin-top:6px;background:#1a2340;border-radius:7px;padding:6px 10px">
-        <span class="tlabel" style="color:#f5d800;font-size:13px">TOTAL COST =</span>
-        <span id="d1-totalCost-${id}" style="color:#f5d800;font-weight:900;font-size:16px;margin-left:8px">Rs. 0/=</span>
-      </div>
     </div>
   </div>
   <div class="svg-preview">${d1SVG(id)}</div>
@@ -1307,27 +1156,6 @@ function d1Motor(id,s){
   document.getElementById('d1cL-'+id).setAttribute('fill',s==='Left'?'#f5d800':'white');
   document.getElementById('d1cR-'+id).setAttribute('fill',s==='Right'?'#f5d800':'white');
 }
-function d1CalcCost(id){
-  const d = doors.find(x=>x.id===id);
-  const motorType  = document.getElementById('d1-motorType-'+id).value;
-  const motorPrice = parseFloat(document.getElementById('d1-motorPrice-'+id).value)||0;
-  const sqftPrice  = parseFloat(document.getElementById('d1-sqftPrice-'+id).value)||0;
-  // Read directly from input fields (most up-to-date values)
-  const bh = parseFloat(document.getElementById('d1-bh-'+id).value)||0;
-  const eh = parseFloat(document.getElementById('d1-eh-'+id).value)||0;
-  const bw = parseFloat(document.getElementById('d1-bw-'+id).value)||0;
-  const ew = parseFloat(document.getElementById('d1-ew-'+id).value)||0;
-  const th = bh + eh;
-  const tw = bw + ew;
-  const area = Math.round((th * tw) / 144 * 100) / 100;
-  const total = motorPrice + (area * sqftPrice);
-  d.motorType  = motorType;
-  d.motorPrice = motorPrice;
-  d.sqftPrice  = sqftPrice;
-  d.totalCost  = total;
-  document.getElementById('d1-totalCost-'+id).textContent =
-    'Rs. ' + Math.round(total).toLocaleString() + '/=';
-}
 function d1Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
   document.getElementById('d1-b'+key+'-'+id).classList.toggle('active',d.boxes[key]);
@@ -1338,19 +1166,19 @@ function d1Update(id){
   const bw=parseFloat(document.getElementById('d1-bw-'+id).value)||0;
   const eh=parseFloat(document.getElementById('d1-eh-'+id).value)||0;
   const ew=parseFloat(document.getElementById('d1-ew-'+id).value)||0;
-  const th=bh+eh,tw=bw+ew;
-  document.getElementById('d1-dbh-'+id).textContent=frac(bh);
-  document.getElementById('d1-deh-'+id).textContent=frac(eh);
-  document.getElementById('d1-dth-'+id).textContent=frac(th);
-  document.getElementById('d1-dbw-'+id).textContent=frac(bw);
-  document.getElementById('d1-dew-'+id).textContent=frac(ew);
-  document.getElementById('d1-dtw-'+id).textContent=frac(tw);
-  document.getElementById('d1svgBH-'+id).textContent='Base Height: '+frac(bh);
-  document.getElementById('d1svgTH-'+id).textContent='Total H: '+frac(th);
-  document.getElementById('d1svgBW-'+id).textContent='Base Width: '+frac(bw);
-  document.getElementById('d1svgTW-'+id).textContent='Total W: '+frac(tw);
-  document.getElementById('d1svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
-  d1CalcCost(id);
+  const th=bh+eh,tw=bw+(ew*2);
+  const empty=(!bh&&!bw&&!eh&&!ew);
+  const _f=v=>v?frac(v):'';
+  document.getElementById('d1-dbh-'+id).textContent=_f(bh);
+  document.getElementById('d1-deh-'+id).textContent=_f(eh);
+  document.getElementById('d1-dth-'+id).textContent=_f(th);
+  document.getElementById('d1-dbw-'+id).textContent=_f(bw);
+  document.getElementById('d1-dew-'+id).textContent=_f(ew);
+  document.getElementById('d1-dtw-'+id).textContent=_f(tw);
+  document.getElementById('d1svgBH-'+id).textContent=bh?'Base Height: '+frac(bh):'';
+  document.getElementById('d1svgTH-'+id).textContent=th?'Total Height: '+frac(th):'';
+  document.getElementById('d1svgBW-'+id).textContent=bw?'Base Width: '+frac(bw):'';
+  document.getElementById('d1svgTW-'+id).textContent='Total Width: '+frac(tw);
 }
 
 /* ══ DOOR TYPE 2 ══ */
@@ -1368,7 +1196,7 @@ function d2SVG(id){
   <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <text id="d2svgBH-${id}" x="158" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000" transform="rotate(-90 158 280)">BASE HEIGHT: 45</text>
   <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
-  <text id="d2svgTH-${id}" x="110" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff" transform="rotate(-90 110 280)">Total H: 84 1/2</text>
+  <text id="d2svgTH-${id}" x="85" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff" transform="rotate(-90 85 280)">TOTAL HEIGHT: 84 1/2</text>
   <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
   <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
   <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
@@ -1376,18 +1204,17 @@ function d2SVG(id){
   <text id="d2svgBW-${id}" x="390" y="512" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000">BASE WIDTH: 39 1/2</text>
   <line x1="240" y1="528" x2="540" y2="528" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <line x1="195" y1="565" x2="585" y2="565" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
-  <text id="d2svgTW-${id}" x="390" y="614" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff">Total W: 48</text>
-  <text id="d2svgArea-${id}" x="390" y="345" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">28.00 sq ft</text>
+  <text id="d2svgTW-${id}" x="390" y="602" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff">TOTAL WIDTH: 48</text>
   </svg>`;
 }
 function d2HTML(id){
   return hdr(id,'t2')+`<div class="door-inner">
   <div class="door-inputs">
     <div class="inputs-grid">
-      <div class="finput"><label>Base Height</label><input type="number" id="d2-bh-${id}" value="45" step="0.5" oninput="d2Update(${id})"/></div>
-      <div class="finput"><label>Extra Height</label><input type="number" id="d2-eh-${id}" value="39.5" step="0.5" oninput="d2Update(${id})"/></div>
-      <div class="finput"><label>Base Width</label><input type="number" id="d2-bw-${id}" value="39.5" step="0.5" oninput="d2Update(${id})"/></div>
-      <div class="finput"><label>Extra Width</label><input type="number" id="d2-ew-${id}" value="8.5" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Base Height</label><input type="number" id="d2-bh-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Extra Height</label><input type="number" id="d2-eh-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Base Width</label><input type="number" id="d2-bw-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
+      <div class="finput"><label>Extra Width</label><input type="number" id="d2-ew-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
     </div>
     <div class="extra-controls">
       <div class="ctrl-row">
@@ -1432,18 +1259,19 @@ function d2Update(id){
   const bw=parseFloat(document.getElementById('d2-bw-'+id).value)||0;
   const eh=parseFloat(document.getElementById('d2-eh-'+id).value)||0;
   const ew=parseFloat(document.getElementById('d2-ew-'+id).value)||0;
-  const th=bh+eh,tw=bw+ew;
-  document.getElementById('d2-dbh-'+id).textContent=frac(bh);
-  document.getElementById('d2-deh-'+id).textContent=frac(eh);
-  document.getElementById('d2-dth-'+id).textContent=frac(th);
-  document.getElementById('d2-dbw-'+id).textContent=frac(bw);
-  document.getElementById('d2-dew-'+id).textContent=frac(ew);
-  document.getElementById('d2-dtw-'+id).textContent=frac(tw);
+  const th=bh+eh,tw=bw+(ew*2);
+  const empty=(!bh&&!bw&&!eh&&!ew);
+  const _f2=v=>v?frac(v):'';
+  document.getElementById('d2-dbh-'+id).textContent=_f2(bh);
+  document.getElementById('d2-deh-'+id).textContent=_f2(eh);
+  document.getElementById('d2-dth-'+id).textContent=_f2(th);
+  document.getElementById('d2-dbw-'+id).textContent=_f2(bw);
+  document.getElementById('d2-dew-'+id).textContent=_f2(ew);
+  document.getElementById('d2-dtw-'+id).textContent=_f2(tw);
   document.getElementById('d2svgBH-'+id).textContent='BASE HEIGHT: '+frac(bh);
-  document.getElementById('d2svgTH-'+id).textContent='Total H: '+frac(th);
+  document.getElementById('d2svgTH-'+id).textContent='TOTAL HEIGHT: '+frac(th);
   document.getElementById('d2svgBW-'+id).textContent='BASE WIDTH: '+frac(bw);
-  document.getElementById('d2svgTW-'+id).textContent='Total W: '+frac(tw);
-  if(document.getElementById('d2svgArea-'+id)) document.getElementById('d2svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
+  document.getElementById('d2svgTW-'+id).textContent='TOTAL WIDTH: '+frac(tw);
 }
 </script>
 </body>
