@@ -1312,8 +1312,13 @@ function d1CalcCost(id){
   const motorType  = document.getElementById('d1-motorType-'+id).value;
   const motorPrice = parseFloat(document.getElementById('d1-motorPrice-'+id).value)||0;
   const sqftPrice  = parseFloat(document.getElementById('d1-sqftPrice-'+id).value)||0;
-  const th = (d.bh||0) + (d.eh||0);
-  const tw = (d.bw||0) + (d.ew||0);
+  // Read directly from input fields (most up-to-date values)
+  const bh = parseFloat(document.getElementById('d1-bh-'+id).value)||0;
+  const eh = parseFloat(document.getElementById('d1-eh-'+id).value)||0;
+  const bw = parseFloat(document.getElementById('d1-bw-'+id).value)||0;
+  const ew = parseFloat(document.getElementById('d1-ew-'+id).value)||0;
+  const th = bh + eh;
+  const tw = bw + ew;
   const area = (th * tw) / 144;
   const total = motorPrice + (area * sqftPrice);
   d.motorType  = motorType;
@@ -1322,9 +1327,6 @@ function d1CalcCost(id){
   d.totalCost  = total;
   document.getElementById('d1-totalCost-'+id).textContent =
     'Rs. ' + Math.round(total).toLocaleString() + '/=';
-  // Update card title
-  const title = document.getElementById('d1-title-'+id);
-  // title stays as-is
 }
 function d1Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
