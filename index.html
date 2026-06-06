@@ -1323,7 +1323,11 @@ function d1CalcCost(id){
   const th = bh + eh;
   const tw = bw + ew;
   const area = Math.round((th * tw) / 144 * 100) / 100;
-  const total = motorPrice + (area * sqftPrice);
+  // Minimum 50 sq ft rule:
+  // area < 50  → Total = Motor Price + (50 × Price per sq ft)
+  // area >= 50 → Total = Motor Price + (area × Price per sq ft)
+  const billableArea = area < 50 ? 50 : area;
+  const total = motorPrice + (billableArea * sqftPrice);
   d.motorType  = motorType;
   d.motorPrice = motorPrice;
   d.sqftPrice  = sqftPrice;
