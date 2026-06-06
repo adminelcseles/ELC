@@ -252,7 +252,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
   <span class="app-title">🚪 Door Pro Order Sheet</span>
   <div class="top-btns">
     <button class="tbtn addwg" onclick="addDoor('wg')">+ Wicket Gate</button>
-    <button class="tbtn add1" onclick="addDoor('t1')">+ Door Type 1</button>
+    <button class="tbtn add1" onclick="addDoor('t1')">+ D Type 01</button>
     <button class="tbtn add2" onclick="addDoor('t2')">+ Door Type 2</button>
     <button class="tbtn" id="viewBtn" onclick="toggleView()">⇔ Side-by-Side</button>
     <button class="tbtn" style="background:#e74c3c;color:white;border-color:#c0392b" onclick="if(confirm('සියලු data clear කර නව order එකක් start කරන්නද?'))resetAll()">🔄 New Order</button>
@@ -309,7 +309,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
   <div class="sum-grid">
     <div class="sum-box"><div class="sv" id="sum-total" style="color:#222">0</div><div class="sl">Total Doors</div></div>
     <div class="sum-box"><div class="sv" id="sum-wg" style="color:#555">0</div><div class="sl">Wicket Gates</div></div>
-    <div class="sum-box"><div class="sv" id="sum-t1" style="color:#1a1aff">0</div><div class="sl">Door Type 1</div></div>
+    <div class="sum-box"><div class="sv" id="sum-t1" style="color:#1a1aff">0</div><div class="sl">D Type 01</div></div>
     <div class="sum-box"><div class="sv" id="sum-t2" style="color:#cc0000">0</div><div class="sl">Door Type 2</div></div>
   </div>
 </div>
@@ -436,7 +436,7 @@ function sendWhatsApp(){
 📅 Date: ${orderDate}
 ━━━━━━━━━━━━━━━━━━━
 🚪 Total Doors: ${totalDoors}${t1>0?`
-   • Door Type 1: ${t1}`:''}${t2>0?`
+   • D Type 01: ${t1}`:''}${t2>0?`
    • Door Type 2: ${t2}`:''}${wg>0?`
    • Wicket Gate: ${wg}`:''}
 ━━━━━━━━━━━━━━━━━━━
@@ -573,7 +573,7 @@ function doPrint(){
       </svg>`;
 
     } else if(dv.type==='t1'){
-      lCls='lbl1'; lTxt='Door Type 1';
+      lCls='lbl1'; lTxt='D Type 01';
       const th=dv.bh+dv.eh, tw=dv.bw+dv.ew;
       const mL=dv.motor==='Left'?'#f5d800':'white';
       const mR=dv.motor==='Right'?'#f5d800':'white';
@@ -1115,7 +1115,7 @@ function saveToSheet(custName, custWhatsapp, custAddress, orderNum, orderDate,
       } else {
         const th = d.bh + d.eh, tw = d.bw + d.ew;
         return { ...base,
-          label: d.type === 't1' ? 'Door Type 1' : 'Door Type 2',
+          label: d.type === 't1' ? 'D Type 01' : 'Door Type 2',
           baseH: d.bh, extraH: d.eh, totalH: th,
           baseW: d.bw, extraW: d.ew, totalW: tw,
           motor: d.motor || '', combo: d.combo || ''
@@ -1178,7 +1178,7 @@ function deleteDoor(id){
 }
 
 function hdr(id,type){
-  const lbl=type==='wg'?'Wicket Gate':type==='t1'?'Door Type 1':'Door Type 2';
+  const lbl=type==='wg'?'Wicket Gate':type==='t1'?'D Type 01':'Door Type 2';
   const cls=type==='wg'?'lblwg':type==='t1'?'lbl1':'lbl2';
   return`<div class="door-header"><span class="drag-handle">⠿</span><span class="door-label ${cls}">${lbl}</span><button class="del-btn" onclick="deleteDoor(${id})">✕</button></div>`;
 }
