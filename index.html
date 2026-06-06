@@ -695,7 +695,7 @@ function doPrint(){
       );
       return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardHeightPx + 'px;box-sizing:border-box;overflow:visible;display:flex;flex-direction:column;padding:1.5mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
-        + '<div class="dh" style="margin-bottom:3px"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span></div>'
+        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost ? '<span style="font-size:10px;font-weight:900;color:#1a2340;background:#f5d800;padding:2px 7px;border-radius:4px;letter-spacing:0.3px">Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
         + topHTML
         + '</div>'
         + '<div style="flex:0 0 auto;width:100%;overflow:visible;line-height:0;">' + svgFinal + '</div>'
