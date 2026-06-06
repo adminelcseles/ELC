@@ -518,7 +518,11 @@ function doPrint(){
         eh: parseFloat(document.getElementById('d1-eh-'+id).value)||0,
         bw: parseFloat(document.getElementById('d1-bw-'+id).value)||0,
         ew: parseFloat(document.getElementById('d1-ew-'+id).value)||0,
-        motor: d.motor, boxes: d.boxes
+        motor: d.motor, boxes: d.boxes,
+        motorType:  document.getElementById('d1-motorType-'+id).value  || '',
+        motorPrice: parseFloat(document.getElementById('d1-motorPrice-'+id).value)||0,
+        sqftPrice:  parseFloat(document.getElementById('d1-sqftPrice-'+id).value)||0,
+        totalCost:  d.totalCost || 0
       };
     } else {
       const cb=document.querySelector('#d2-combo-'+id+' .combo-btn.active');
@@ -585,7 +589,20 @@ function doPrint(){
         <div class="tots">
           <div class="tot-row"><span class="tl red">TOTAL H:</span><span class="tv">${frac(dv.bh)}</span><span class="tp">+</span><span class="tv">${frac(dv.eh)}</span><span class="te">=</span><span class="tv bold-val red-val">${frac(th)}</span></div>
           <div class="tot-row"><span class="tl blue">TOTAL W:</span><span class="tv">${frac(dv.bw)}</span><span class="tp">+</span><span class="tv">${frac(dv.ew)}</span><span class="te">=</span><span class="tv bold-val blue-val">${frac(tw)}</span></div>
-        </div>`;
+        </div>
+        ${dv.motorType || dv.motorPrice || dv.totalCost ? `
+        <div style="margin-top:3px;border-top:1.5px solid #1a2340;padding-top:3px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px">
+            ${dv.motorType ? `<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Motor Type</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">${dv.motorType}</div></div>` : ''}
+            ${dv.motorPrice ? `<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Motor Price</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.motorPrice).toLocaleString()}/=</div></div>` : ''}
+          </div>
+          ${dv.totalCost ? `
+          <div style="background:#1a2340;border-radius:3px;padding:3px 6px;display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:7px;font-weight:700;color:#f5d800;text-transform:uppercase;letter-spacing:0.5px">Total Cost</span>
+            <span style="font-size:11px;font-weight:900;color:#f5d800">Rs. ${Math.round(dv.totalCost).toLocaleString()}/=</span>
+          </div>` : ''}
+        </div>` : ''}
+        `;
       svgHTML=`<svg viewBox="0 0 680 650" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs>
           <marker id="ar${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="red" stroke-width="1.8"/></marker>
