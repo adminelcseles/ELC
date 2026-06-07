@@ -536,7 +536,10 @@ function doPrint(){
         ew: parseFloat(document.getElementById('d2-ew-'+id).value)||0,
         combo: ct,
         price: d2price,
-        totalCost: d2price * (parseFloat((document.getElementById('d2-bw-'+id)||{}).value||0) + (parseFloat((document.getElementById('d2-ew-'+id)||{}).value||0)*2)), boxes: d.boxes
+        coveringCost: d.coveringCost || 0,
+        sqftPrice2: d.sqftPrice2 || 0,
+        totalCost: d.totalCost || 0,
+        boxes: d.boxes
       };
     }
   }
@@ -646,7 +649,8 @@ function doPrint(){
         ${(dv.combo||dv.price) ? `
         <div style="margin-top:3px;border-top:1.5px solid #cc000033;padding-top:3px;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
           ${dv.combo?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Type</label><div style="font-size:12px;font-weight:700;color:#cc0000;padding:2px 4px;background:#fff0f0;border-radius:2px;border:1px solid #cc000055">${dv.combo}</div></div>`:''}
-          ${dv.price?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Price/ft</label><div style="font-size:12px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.price).toLocaleString()}/=</div></div>`:''}
+          ${dv.coveringCost?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Covering Cost</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.coveringCost).toLocaleString()}/=</div></div>`:''}
+          ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
         </div>`:''}
         `;
       svgHTML=`<svg viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
@@ -1441,6 +1445,16 @@ function d2HTML(id){
         <span class="ctrl-lbl" style="color:#1a7a1a;font-size:11px;">Covering Cost:</span>
         <span id="d2-tcost-${id}" style="font-size:13px;font-weight:900;color:#1a7a1a;background:#efffef;padding:3px 8px;border-radius:6px;border:1.5px solid #1a7a1a55;">Rs. 0/=</span>
       </div>
+      <div class="ctrl-row" style="margin-top:4px;gap:6px;">
+        <input type="number" id="d2-sqftPrice-${id}" placeholder="Price per sq ft (Rs)" oninput="d2Update(${id})"
+          style="flex:1;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px;"/>
+      </div>
+      <div class="ctrl-row" style="margin-top:4px;">
+        <div style="width:100%;background:#1a2340;border-radius:7px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#f5d800;font-size:12px;font-weight:700;">TOTAL COST =</span>
+          <span id="d2-totalCostDisplay-${id}" style="color:#f5d800;font-weight:900;font-size:16px;">Rs. 0/=</span>
+        </div>
+      </div>
       <div class="ctrl-row">
         <span class="ctrl-lbl">Boxes</span>
         <button class="box-btn orange active" id="d2-bLO-${id}" onclick="d2Box(${id},'LO')">L Org</button>
@@ -1491,13 +1505,32 @@ function d2Update(id){
   document.getElementById('d2svgTW-'+id).textContent='Total W: '+frac(tw);
   if(document.getElementById('d2svgArea-'+id)) document.getElementById('d2svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
 
-  // Total Cost = Price × Total Width
-  const priceEl = document.getElementById('d2-price-'+id);
-  const tcostEl = document.getElementById('d2-tcost-'+id);
+  // Covering Cost = Price per running ft × Total Width (in ft)
+  const priceEl   = document.getElementById('d2-price-'+id);
+  const tcostEl   = document.getElementById('d2-tcost-'+id);
+  const sqftPriceEl = document.getElementById('d2-sqftPrice-'+id);
+  const totalCostEl = document.getElementById('d2-totalCostDisplay-'+id);
+
   if(priceEl && tcostEl){
     const price = parseFloat(priceEl.value)||0;
-    const totalCost = price * (tw / 12);
-    tcostEl.textContent = totalCost > 0 ? 'Rs. ' + Math.round(totalCost).toLocaleString() + '/=' : 'Rs. 0/=';
+    const coveringCost = price * (tw / 12);
+    tcostEl.textContent = 'Rs. ' + Math.round(coveringCost).toLocaleString() + '/=';
+
+    // Total Cost = Covering Cost + (area × sqft price) with min 50 sq ft rule
+    if(sqftPriceEl && totalCostEl){
+      const sqftPrice = parseFloat(sqftPriceEl.value)||0;
+      const area = Math.round((th * tw) / 144 * 100) / 100;
+      const billableArea = area < 50 ? 50 : area;
+      const totalCost = coveringCost + (billableArea * sqftPrice);
+      totalCostEl.textContent = 'Rs. ' + Math.round(totalCost).toLocaleString() + '/=';
+      // Save to door object
+      const d = doors.find(x=>x.id===id);
+      if(d){
+        d.coveringCost = coveringCost;
+        d.sqftPrice2   = sqftPrice;
+        d.totalCost    = totalCost;
+      }
+    }
   }
 
   // Update SVG combo labels based on selected type
