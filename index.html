@@ -525,15 +525,18 @@ function doPrint(){
         totalCost:  d.totalCost || 0
       };
     } else {
-      const cb=document.querySelector('#d2-combo-'+id+' .combo-btn.active');
-      const ct=cb?cb.textContent.trim():'L/C';
+      const comboSel=document.getElementById('d2-combo-'+id);
+      const ct=comboSel?comboSel.value:'L/C';
+      const d2price=parseFloat((document.getElementById('d2-price-'+id)||{}).value)||0;
       return {
         type:'t2',
         bh: parseFloat(document.getElementById('d2-bh-'+id).value)||0,
         eh: parseFloat(document.getElementById('d2-eh-'+id).value)||0,
         bw: parseFloat(document.getElementById('d2-bw-'+id).value)||0,
         ew: parseFloat(document.getElementById('d2-ew-'+id).value)||0,
-        combo: ct, boxes: d.boxes
+        combo: ct,
+        price: d2price,
+        totalCost: d2price * (parseFloat((document.getElementById('d2-bw-'+id)||{}).value||0) + (parseFloat((document.getElementById('d2-ew-'+id)||{}).value||0)*2)), boxes: d.boxes
       };
     }
   }
@@ -593,8 +596,8 @@ function doPrint(){
         ${dv.motorType || dv.motorPrice || dv.totalCost ? `
         <div style="margin-top:3px;border-top:1.5px solid #1a2340;padding-top:3px">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px">
-            ${dv.motorType ? `<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Motor Type</label><div style="font-size:11px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">${dv.motorType}</div></div>` : ''}
-            ${dv.motorPrice ? `<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Motor Price</label><div style="font-size:11px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.motorPrice).toLocaleString()}/=</div></div>` : ''}
+            ${dv.motorType ? `<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:11px;font-weight:700;color:#444;text-transform:uppercase">Motor Type</label><div style="font-size:13px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">${dv.motorType}</div></div>` : ''}
+            ${dv.motorPrice ? `<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:11px;font-weight:700;color:#444;text-transform:uppercase">Motor Price</label><div style="font-size:13px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.motorPrice).toLocaleString()}/=</div></div>` : ''}
           </div>
         </div>` : ''}
         `;
@@ -639,7 +642,13 @@ function doPrint(){
         <div class="tots">
           <div class="tot-row"><span class="tl red">TOTAL H:</span><span class="tv">${frac(dv.bh)}</span><span class="tp">+</span><span class="tv">${frac(dv.eh)}</span><span class="te">=</span><span class="tv bold-val red-val">${frac(th)}</span></div>
           <div class="tot-row"><span class="tl blue">TOTAL W:</span><span class="tv">${frac(dv.bw)}</span><span class="tp">+</span><span class="tv">${frac(dv.ew)}</span><span class="te">=</span><span class="tv bold-val blue-val">${frac(tw)}</span></div>
-        </div>`;
+        </div>
+        ${(dv.combo||dv.price) ? `
+        <div style="margin-top:3px;border-top:1.5px solid #cc000033;padding-top:3px;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+          ${dv.combo?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Type</label><div style="font-size:12px;font-weight:700;color:#cc0000;padding:2px 4px;background:#fff0f0;border-radius:2px;border:1px solid #cc000055">${dv.combo}</div></div>`:''}
+          ${dv.price?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Price/ft</label><div style="font-size:12px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.price).toLocaleString()}/=</div></div>`:''}
+        </div>`:''}
+        `;
       svgHTML=`<svg viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs>
           <marker id="atw${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#1a1aff" stroke-width="1.8"/></marker>
@@ -690,7 +699,7 @@ function doPrint(){
       );
       return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardHeightPx + 'px;box-sizing:border-box;overflow:visible;display:flex;flex-direction:column;padding:1.5mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
-        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost ? '<span style="font-size:14px;font-weight:900;color:#1a2340;background:#f5d800;padding:3px 10px;border-radius:4px;white-space:nowrap;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
+        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
         + topHTML
         + '</div>'
         + '<div style="flex:0 0 auto;width:100%;overflow:visible;line-height:0;">' + svgFinal + '</div>'
@@ -1414,15 +1423,24 @@ function d2HTML(id){
       <div class="finput"><label>Extra Width</label><input type="number" id="d2-ew-${id}" value="" step="0.5" oninput="d2Update(${id})"/></div>
     </div>
     <div class="extra-controls">
-      <div class="ctrl-row">
+      <div class="ctrl-row" style="gap:6px;flex-wrap:wrap;align-items:center;">
         <span class="ctrl-lbl">Type</span>
-        <div id="d2-combo-${id}" style="display:flex;gap:3px;flex-wrap:wrap">
-          <button class="combo-btn active" onclick="d2Combo(${id},this,'L','C')">L/C</button>
-          <button class="combo-btn" onclick="d2Combo(${id},this,'U','C')">U/C</button>
-          <button class="combo-btn" onclick="d2Combo(${id},this,'F','C')">F/C</button>
-          <button class="combo-btn" onclick="d2Combo(${id},this,'F','F')">F/F</button>
-          <button class="combo-btn" onclick="d2Combo(${id},this,'B','F')">B/F</button>
-        </div>
+        <select id="d2-combo-${id}" onchange="d2Update(${id})"
+          style="padding:5px 8px;font-size:13px;font-weight:700;border-radius:6px;border:2px solid #cc000066;background:white;color:#cc0000;cursor:pointer;min-width:70px;">
+          <option value="L/C">L/C</option>
+          <option value="F/F">F/F</option>
+          <option value="U/C">U/C</option>
+          <option value="F/C">F/C</option>
+        </select>
+        <span class="ctrl-lbl" style="min-width:auto;">Price</span>
+        <input type="number" id="d2-price-${id}" placeholder="0" step="100"
+          style="width:90px;padding:5px 7px;font-size:13px;font-weight:700;border-radius:6px;border:2px solid #cc000066;color:#1a2340;"
+          oninput="d2Update(${id})"/>
+        <span style="font-size:11px;font-weight:700;color:#666;">Rs/ft</span>
+      </div>
+      <div class="ctrl-row" style="margin-top:2px;">
+        <span class="ctrl-lbl" style="color:#1a7a1a;font-size:11px;">Total Cost:</span>
+        <span id="d2-tcost-${id}" style="font-size:13px;font-weight:900;color:#1a7a1a;background:#efffef;padding:3px 8px;border-radius:6px;border:1.5px solid #1a7a1a55;">Rs. 0/=</span>
       </div>
       <div class="ctrl-row">
         <span class="ctrl-lbl">Boxes</span>
@@ -1473,6 +1491,15 @@ function d2Update(id){
   document.getElementById('d2svgBW-'+id).textContent='BASE WIDTH: '+frac(bw);
   document.getElementById('d2svgTW-'+id).textContent='Total W: '+frac(tw);
   if(document.getElementById('d2svgArea-'+id)) document.getElementById('d2svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
+
+  // Total Cost = Price × Total Width
+  const priceEl = document.getElementById('d2-price-'+id);
+  const tcostEl = document.getElementById('d2-tcost-'+id);
+  if(priceEl && tcostEl){
+    const price = parseFloat(priceEl.value)||0;
+    const totalCost = price * tw;
+    tcostEl.textContent = totalCost > 0 ? 'Rs. ' + Math.round(totalCost).toLocaleString() + '/=' : 'Rs. 0/=';
+  }
 }
 </script>
 </body>
