@@ -1451,16 +1451,6 @@ function d2HTML(id){
         <input type="number" id="d2-sqftPrice-${id}" placeholder="Price per sq ft (Rs)" oninput="d2Update(${id})"
           style="flex:1;padding:8px;border-radius:7px;border:2px solid #ccc;font-size:14px;"/>
       </div>
-      <div style="margin-top:6px;background:#f9f9f9;border-radius:8px;padding:8px 10px;border:1px solid #ddd;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <span style="font-size:11px;font-weight:700;color:#666;">Covering Cost</span>
-          <span id="d2-tcost-${id}" style="font-size:12px;font-weight:900;color:#1a7a1a;">Rs. 0/=</span>
-        </div>
-        <div style="width:100%;background:#1a2340;border-radius:7px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:#f5d800;font-size:12px;font-weight:700;">TOTAL COST =</span>
-          <span id="d2-totalCostDisplay-${id}" style="color:#f5d800;font-weight:900;font-size:16px;">Rs. 0/=</span>
-        </div>
-      </div>
       <div class="ctrl-row">
         <span class="ctrl-lbl">Boxes</span>
         <button class="box-btn orange active" id="d2-bLO-${id}" onclick="d2Box(${id},'LO')">L Org</button>
@@ -1472,6 +1462,16 @@ function d2HTML(id){
     <div class="totals">
       <div class="total-row"><span class="tlabel red">TOTAL H:</span><span class="tval" id="d2-dbh-${id}">45</span><span class="tplus">+</span><span class="tval" id="d2-deh-${id}">39½</span><span class="teq">=</span><span class="tval" id="d2-dth-${id}">84½</span></div>
       <div class="total-row"><span class="tlabel blue">TOTAL W:</span><span class="tval" id="d2-dbw-${id}">39½</span><span class="tplus">+</span><span class="tval" id="d2-dew-${id}">8½</span><span class="teq">=</span><span class="tval" id="d2-dtw-${id}">48</span></div>
+      <div style="margin-top:8px;background:#f9f9f9;border-radius:8px;padding:8px 10px;border:1px solid #ddd;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:12px;font-weight:700;color:#666;">Covering Cost</span>
+          <span id="d2-tcost-${id}" style="font-size:13px;font-weight:900;color:#1a7a1a;">Rs. 0/=</span>
+        </div>
+        <div style="width:100%;background:#1a2340;border-radius:7px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#f5d800;font-size:13px;font-weight:700;">TOTAL COST =</span>
+          <span id="d2-totalCostDisplay-${id}" style="color:#f5d800;font-weight:900;font-size:18px;">Rs. 0/=</span>
+        </div>
+      </div>
     </div>
   </div>
   <div class="svg-preview">${d2SVG(id)}</div>
