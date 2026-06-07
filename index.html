@@ -699,7 +699,7 @@ function doPrint(){
       );
       return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardHeightPx + 'px;box-sizing:border-box;overflow:visible;display:flex;flex-direction:column;padding:1.5mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
-        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
+        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost && dv.type==='t1' ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + (dv.totalCost && dv.type==='t2' ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Covering Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
         + topHTML
         + '</div>'
         + '<div style="flex:0 0 auto;width:100%;overflow:visible;line-height:0;">' + svgFinal + '</div>'
@@ -1319,7 +1319,6 @@ function d1HTML(id){
         <span class="tlabel" style="color:#f5d800;font-size:13px">TOTAL COST =</span>
         <span id="d1-totalCost-${id}" style="color:#f5d800;font-weight:900;font-size:16px;margin-left:8px">Rs. 0/=</span>
       </div>
-
     </div>
   </div>
   <div class="svg-preview">${d1SVG(id)}</div>
@@ -1356,7 +1355,6 @@ function d1CalcCost(id){
   d.totalCost  = total;
   document.getElementById('d1-totalCost-'+id).textContent =
     'Rs. ' + Math.round(total).toLocaleString() + '/=';
-
 }
 function d1Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
@@ -1440,12 +1438,6 @@ function d2HTML(id){
           oninput="d2Update(${id})"/>
         <span style="font-size:11px;font-weight:700;color:#666;">Rs/ft</span>
       </div>
-      <div class="ctrl-row" style="margin-top:4px;gap:6px;align-items:center;">
-        <span class="ctrl-lbl">Sq ft Price</span>
-        <input type="number" id="d2-sqftPrice-${id}" placeholder="Price per sq ft (Rs)" step="100"
-          style="flex:1;padding:6px 8px;font-size:13px;font-weight:700;border-radius:6px;border:2px solid #cc000066;color:#1a2340;"
-          oninput="d2Update(${id})"/>
-      </div>
       <div class="ctrl-row" style="margin-top:2px;">
         <span class="ctrl-lbl" style="color:#1a7a1a;font-size:11px;">Total Cost:</span>
         <span id="d2-tcost-${id}" style="font-size:13px;font-weight:900;color:#1a7a1a;background:#efffef;padding:3px 8px;border-radius:6px;border:1.5px solid #1a7a1a55;">Rs. 0/=</span>
@@ -1501,18 +1493,11 @@ function d2Update(id){
   if(document.getElementById('d2svgArea-'+id)) document.getElementById('d2svgArea-'+id).textContent=(th*tw/144).toFixed(2)+' sq ft';
 
   // Total Cost = Price × Total Width
-  const priceEl    = document.getElementById('d2-price-'+id);
-  const sqftEl     = document.getElementById('d2-sqftPrice-'+id);
-  const tcostEl    = document.getElementById('d2-tcost-'+id);
-  if(tcostEl){
-    const price     = parseFloat(priceEl?priceEl.value:0)||0;
-    const sqftPrice = parseFloat(sqftEl?sqftEl.value:0)||0;
-    const area      = (th * tw) / 144;
-    const billable  = area < 50 ? 50 : area;
-    const totalCost = (price * (tw / 12)) + (sqftPrice * billable);
-    // Save to door data
-    const dv = doors.find(x=>x.id===id);
-    if(dv) dv.totalCost = totalCost;
+  const priceEl = document.getElementById('d2-price-'+id);
+  const tcostEl = document.getElementById('d2-tcost-'+id);
+  if(priceEl && tcostEl){
+    const price = parseFloat(priceEl.value)||0;
+    const totalCost = price * (tw / 12);
     tcostEl.textContent = totalCost > 0 ? 'Rs. ' + Math.round(totalCost).toLocaleString() + '/=' : 'Rs. 0/=';
   }
 
