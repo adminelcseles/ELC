@@ -1395,7 +1395,7 @@ function d2SVG(id){
   </defs>
   <rect x="240" y="60" width="300" height="390" stroke="#111" stroke-width="4" fill="white"/>
   <line x1="240" y1="165" x2="540" y2="165" stroke="#111" stroke-width="3"/>
-  <line x1="390" y1="60" x2="390" y2="165" stroke="#111" stroke-width="3"/>
+  <line id="d2div-${id}" x1="390" y1="60" x2="390" y2="165" stroke="#111" stroke-width="3"/>
   <text id="d2LL-${id}" x="315" y="130" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="52" fill="#1a1aff">L</text>
   <text id="d2RL-${id}" x="465" y="130" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="52" fill="#cc0000">C</text>
   <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
@@ -1497,9 +1497,30 @@ function d2Update(id){
   const tcostEl = document.getElementById('d2-tcost-'+id);
   if(priceEl && tcostEl){
     const price = parseFloat(priceEl.value)||0;
-    const totalCost = price * tw;
+    const totalCost = price * (tw / 12);
     tcostEl.textContent = totalCost > 0 ? 'Rs. ' + Math.round(totalCost).toLocaleString() + '/=' : 'Rs. 0/=';
   }
+
+  // Update SVG combo labels based on selected type
+  const comboSel = document.getElementById('d2-combo-'+id);
+  const combo = comboSel ? comboSel.value : 'L/C';
+  const parts = combo.split('/');
+  const leftLbl  = parts[0] || 'L';
+  const rightLbl = parts[1] || 'C';
+
+  // Color mapping
+  const colorMap = {'L':'#1a1aff','U':'#1a1aff','F':'#cc0000','B':'#cc0000','C':'#cc0000'};
+  const lColor = colorMap[leftLbl] || '#1a1aff';
+  const rColor = colorMap[rightLbl] || '#cc0000';
+
+  const llEl = document.getElementById('d2LL-'+id);
+  const rlEl = document.getElementById('d2RL-'+id);
+  if(llEl){ llEl.textContent = leftLbl;  llEl.setAttribute('fill', lColor); }
+  if(rlEl){ rlEl.textContent = rightLbl; rlEl.setAttribute('fill', rColor); }
+
+  // F/F: hide divider line; others: show
+  const divider = document.getElementById('d2div-'+id);
+  if(divider){ divider.style.display = combo==='F/F' ? 'none' : ''; }
 }
 </script>
 </body>
