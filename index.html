@@ -646,18 +646,11 @@ function doPrint(){
           <div class="tot-row"><span class="tl red">TOTAL H:</span><span class="tv">${frac(dv.bh)}</span><span class="tp">+</span><span class="tv">${frac(dv.eh)}</span><span class="te">=</span><span class="tv bold-val red-val">${frac(th)}</span></div>
           <div class="tot-row"><span class="tl blue">TOTAL W:</span><span class="tv">${frac(dv.bw)}</span><span class="tp">+</span><span class="tv">${frac(dv.ew)}</span><span class="te">=</span><span class="tv bold-val blue-val">${frac(tw)}</span></div>
         </div>
-        ${(dv.combo||dv.price) ? `
+        ${(dv.coveringCost||dv.sqftPrice2) ? `
         <div style="margin-top:3px;border-top:1.5px solid #cc000033;padding-top:3px;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-          ${dv.combo?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Type</label><div style="font-size:12px;font-weight:700;color:#cc0000;padding:2px 4px;background:#fff0f0;border-radius:2px;border:1px solid #cc000055">${dv.combo}</div></div>`:''}
           ${dv.coveringCost?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Covering Cost</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.coveringCost).toLocaleString()}/=</div></div>`:''}
           ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
-        </div>
-        ${dv.totalCost?`
-        <div style="background:#1a2340;border-radius:3px;padding:3px 6px;margin-top:3px;display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:7px;font-weight:700;color:#f5d800;text-transform:uppercase;letter-spacing:0.5px">Total Cost</span>
-          <span style="font-size:11px;font-weight:900;color:#f5d800">Rs. ${Math.round(dv.totalCost).toLocaleString()}/=</span>
         </div>`:''}
-        `:''}
         `;
       svgHTML=`<svg viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs>
