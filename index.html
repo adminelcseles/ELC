@@ -229,6 +229,9 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 
   /* ── pg1-card SVG: full visible ── */
   .pg1-card{overflow:hidden!important;page-break-inside:avoid!important}
+  .pg1-card>div:last-child{overflow:hidden!important;flex:1 1 auto!important}
+  .pg1-card svg,.pg2-card svg{max-width:100%!important;overflow:hidden!important;display:block!important}
+  .card{overflow:hidden!important}
   .pg1-card svg{display:block!important;overflow:hidden!important;max-width:100%!important}
   .pg1-card .card-svg{overflow:hidden!important}
   .pg1-card .card-details .ig{display:grid!important;grid-template-columns:1fr 1fr!important;gap:2px!important}
@@ -691,14 +694,20 @@ function doPrint(){
       }
       // Card width = 95mm at 96dpi = 358px
       const cardWidthPx = 358;
-      const detPx = 150; // details section height in px
-      const svgWidthPx = cardWidthPx;
+      const detPx = 160; // details section height in px
+      const svgWidthPx = cardWidthPx - 8;
       const svgHeightPx = Math.round(svgWidthPx * svgAspect);
       const cardHeightPx = detPx + svgHeightPx + 10;
 
       const svgFinal = svgHTML.replace(
-        /(<svg\b)([^>]*)(>)/,
-        '$1 viewBox="' + (vbMatch ? vbMatch[1] : '0 0 750 730') + '" width="' + svgWidthPx + '" height="' + svgHeightPx + '" style="display:block;overflow:hidden;max-width:100%;" preserveAspectRatio="xMidYMid meet"$3'
+        /viewBox=["'][^"']+["']/g, ''
+      ).replace(
+        /width=["'][^"']+["']/g, ''
+      ).replace(
+        /height=["'][^"']+["']/g, ''
+      ).replace(
+        /(<svg\b)/,
+        '$1 viewBox="' + (vbMatch ? vbMatch[1] : '0 0 750 730') + '" width="' + svgWidthPx + '" height="' + svgHeightPx + '" style="display:block;overflow:hidden;" preserveAspectRatio="xMidYMid meet"'
       );
       return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardHeightPx + 'px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;padding:1.5mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
