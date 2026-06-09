@@ -121,8 +121,8 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 ═══════════════════════════════════════════ */
 @media print{
   @page{size:A4 portrait;margin:5mm}
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  svg rect,svg line,svg circle,svg path,svg text{color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  svg,svg *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
   body{background:white!important;padding:0!important;margin:0!important;display:block!important;width:200mm!important}
 
   .top-bar,.summary-card,.empty-msg{display:none!important}
@@ -226,7 +226,13 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 
   /* ── SVG fills right side ── */
   .svg-preview{width:100%!important;height:100%!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;padding-left:0.5mm!important}
-  .svg-preview svg{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:visible!important}
+  .svg-preview svg{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:visible!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  /* Force SVG colors to print */
+  .svg-preview svg rect{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  .svg-preview svg circle{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  .svg-preview svg line{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  .svg-preview svg text{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  .svg-preview svg path{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
 
   /* ── pg1-card SVG: full visible ── */
   .pg1-card{overflow:hidden!important;page-break-inside:avoid!important}
@@ -453,6 +459,36 @@ Thank you for choosing ELCARDO! 🙏`;
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
+}
+
+function forceSVGColors(){
+  // Force all SVG fills/strokes to be inline so Chrome prints them
+  document.querySelectorAll('.svg-preview svg rect, .svg-preview svg circle').forEach(el => {
+    const fill = el.getAttribute('fill');
+    if(fill && fill !== 'none' && fill !== 'white' && fill !== '#fff' && fill !== 'White'){
+      el.style.fill = fill;
+    }
+    const stroke = el.getAttribute('stroke');
+    if(stroke && stroke !== 'none'){
+      el.style.stroke = stroke;
+      el.style.strokeWidth = el.getAttribute('stroke-width') || '1';
+    }
+  });
+  document.querySelectorAll('.svg-preview svg line, .svg-preview svg path').forEach(el => {
+    const stroke = el.getAttribute('stroke');
+    if(stroke && stroke !== 'none'){
+      el.style.stroke = stroke;
+    }
+    const fill = el.getAttribute('fill');
+    if(fill && fill !== 'none'){
+      el.style.fill = fill;
+    }
+  });
+  document.querySelectorAll('.svg-preview svg text').forEach(el => {
+    const fill = el.getAttribute('fill');
+    if(fill) el.style.fill = fill;
+    el.style.fontFamily = 'Arial, sans-serif';
+  });
 }
 
 function doPrint(){
@@ -847,7 +883,13 @@ function doPrint(){
 
   /* ── print CSS ── */
   const css=`
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  svg,svg *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  svg rect[fill="#ff8c00"],svg rect[fill="#FF8C00"]{fill:#ff8c00!important;background:#ff8c00!important}
+  svg rect[fill="#00bfff"],svg rect[fill="#00BFFF"]{fill:#00bfff!important;background:#00bfff!important}
+  svg rect[fill="#f5d800"],svg rect[fill="#F5D800"]{fill:#f5d800!important;background:#f5d800!important}
+  svg rect[fill="#dd1111"],svg rect[fill="#DD1111"]{fill:#dd1111!important;background:#dd1111!important}
+  svg rect[fill="#2244cc"],svg rect[fill="#2244CC"]{fill:#2244cc!important;background:#2244cc!important}
   body{font-family:Arial,sans-serif;background:white}
   @page{size:A4 portrait;margin:5mm}
 
@@ -1107,7 +1149,28 @@ function doPrint(){
   `;
 
   const pw=window.open('','_blank','width=900,height=700');
-  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${body}</body></html>`);
+  // Inject inline styles on all SVG colored elements before printing
+  const tmpDiv = document.createElement('div');
+  tmpDiv.innerHTML = body;
+  tmpDiv.querySelectorAll('svg rect, svg circle').forEach(el=>{
+    const f = el.getAttribute('fill');
+    if(f && f!=='none' && f.toLowerCase()!=='white' && f!=='#fff' && f!=='#ffffff'){
+      el.setAttribute('style',(el.getAttribute('style')||'')+';fill:'+f+'!important');
+    }
+    const s = el.getAttribute('stroke');
+    if(s && s!=='none') el.setAttribute('style',(el.getAttribute('style')||'')+';stroke:'+s+'!important');
+  });
+  tmpDiv.querySelectorAll('svg line, svg path').forEach(el=>{
+    const s = el.getAttribute('stroke');
+    if(s && s!=='none') el.setAttribute('style',(el.getAttribute('style')||'')+';stroke:'+s+'!important');
+  });
+  tmpDiv.querySelectorAll('svg text').forEach(el=>{
+    const f = el.getAttribute('fill');
+    if(f) el.setAttribute('style',(el.getAttribute('style')||'')+';fill:'+f+'!important');
+  });
+  const bodyWithStyles = tmpDiv.innerHTML;
+
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${bodyWithStyles}</body></html>`);
   pw.document.close();
   pw.focus();
   setTimeout(()=>{pw.print();},800);
