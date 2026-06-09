@@ -121,8 +121,8 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 ═══════════════════════════════════════════ */
 @media print{
   @page{size:A4 portrait;margin:5mm}
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  svg,svg *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  svg rect,svg line,svg circle,svg path,svg text{color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
   body{background:white!important;padding:0!important;margin:0!important;display:block!important;width:200mm!important}
 
   .top-bar,.summary-card,.empty-msg{display:none!important}
@@ -226,13 +226,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 
   /* ── SVG fills right side ── */
   .svg-preview{width:100%!important;height:100%!important;min-height:0!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;padding-left:0.5mm!important}
-  .svg-preview svg{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:visible!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
-  /* Force SVG colors to print */
-  .svg-preview svg rect{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
-  .svg-preview svg circle{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
-  .svg-preview svg line{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
-  .svg-preview svg text{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
-  .svg-preview svg path{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
+  .svg-preview svg{display:block!important;width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;overflow:visible!important}
 
   /* ── pg1-card SVG: full visible ── */
   .pg1-card{overflow:hidden!important;page-break-inside:avoid!important}
@@ -461,36 +455,6 @@ Thank you for choosing ELCARDO! 🙏`;
   window.open(url, '_blank');
 }
 
-function forceSVGColors(){
-  // Force all SVG fills/strokes to be inline so Chrome prints them
-  document.querySelectorAll('.svg-preview svg rect, .svg-preview svg circle').forEach(el => {
-    const fill = el.getAttribute('fill');
-    if(fill && fill !== 'none' && fill !== 'white' && fill !== '#fff' && fill !== 'White'){
-      el.style.fill = fill;
-    }
-    const stroke = el.getAttribute('stroke');
-    if(stroke && stroke !== 'none'){
-      el.style.stroke = stroke;
-      el.style.strokeWidth = el.getAttribute('stroke-width') || '1';
-    }
-  });
-  document.querySelectorAll('.svg-preview svg line, .svg-preview svg path').forEach(el => {
-    const stroke = el.getAttribute('stroke');
-    if(stroke && stroke !== 'none'){
-      el.style.stroke = stroke;
-    }
-    const fill = el.getAttribute('fill');
-    if(fill && fill !== 'none'){
-      el.style.fill = fill;
-    }
-  });
-  document.querySelectorAll('.svg-preview svg text').forEach(el => {
-    const fill = el.getAttribute('fill');
-    if(fill) el.style.fill = fill;
-    el.style.fontFamily = 'Arial, sans-serif';
-  });
-}
-
 function doPrint(){
   const custName     = document.getElementById('custName').value      || '-';
   const custWhatsapp = document.getElementById('custWhatsapp').value   || '-';
@@ -659,10 +623,10 @@ function doPrint(){
         <text x="150" y="260" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="blue" transform="rotate(-90 150 260)">Base H: ${frac(dv.bh)}</text>
         <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
         <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(th)}</text>
-        <rect x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oLR}"/>
-        <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}"/>
-        <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}"/>
-        <rect x="520" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oRR}"/>
+        <rect x="175" y="395" width="45" height="45" fill="#dd1111" stroke="black" stroke-width="2" fill-opacity="${oLR}" style="fill:#dd1111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oLR}"/>
+        <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}" style="fill:#f5d800!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oLY}"/>
+        <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}" style="fill:#f5d800!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oRY}"/>
+        <rect x="520" y="395" width="45" height="45" fill="#dd1111" stroke="black" stroke-width="2" fill-opacity="${oRR}" style="fill:#dd1111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oRR}"/>
         <text x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="blue">Base W: ${frac(dv.bw)}</text>
         <line x1="220" y1="475" x2="520" y2="475" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
@@ -708,10 +672,10 @@ function doPrint(){
         <text x="155" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000" transform="rotate(-90 155 265)">BASE H: ${frac(dv.bh)}</text>
         <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
         <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">Total H: ${frac(th)}</text>
-        <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}"/>
-        <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}"/>
-        <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}"/>
-        <rect x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oRO}"/>
+        <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}" style="fill:#ff8c00!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oLO}"/>
+        <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}" style="fill:#00bfff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oLB}"/>
+        <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}" style="fill:#00bfff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oRB}"/>
+        <rect x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oRO}" style="fill:#ff8c00!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;opacity:${oRO}"/>
         <text x="390" y="510" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
         <line x1="240" y1="525" x2="540" y2="525" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
@@ -884,13 +848,10 @@ function doPrint(){
   /* ── print CSS ── */
   const css=`
   *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  svg,svg *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  svg rect[fill="#ff8c00"],svg rect[fill="#FF8C00"]{fill:#ff8c00!important;background:#ff8c00!important}
-  svg rect[fill="#00bfff"],svg rect[fill="#00BFFF"]{fill:#00bfff!important;background:#00bfff!important}
-  svg rect[fill="#f5d800"],svg rect[fill="#F5D800"]{fill:#f5d800!important;background:#f5d800!important}
-  svg rect[fill="#dd1111"],svg rect[fill="#DD1111"]{fill:#dd1111!important;background:#dd1111!important}
-  svg rect[fill="#2244cc"],svg rect[fill="#2244CC"]{fill:#2244cc!important;background:#2244cc!important}
-  body{font-family:Arial,sans-serif;background:white}
+  body{font-family:Arial,sans-serif;background:white;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  svg{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  svg *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  rect[fill]{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   @page{size:A4 portrait;margin:5mm}
 
   /* watermark */
@@ -1149,28 +1110,7 @@ function doPrint(){
   `;
 
   const pw=window.open('','_blank','width=900,height=700');
-  // Inject inline styles on all SVG colored elements before printing
-  const tmpDiv = document.createElement('div');
-  tmpDiv.innerHTML = body;
-  tmpDiv.querySelectorAll('svg rect, svg circle').forEach(el=>{
-    const f = el.getAttribute('fill');
-    if(f && f!=='none' && f.toLowerCase()!=='white' && f!=='#fff' && f!=='#ffffff'){
-      el.setAttribute('style',(el.getAttribute('style')||'')+';fill:'+f+'!important');
-    }
-    const s = el.getAttribute('stroke');
-    if(s && s!=='none') el.setAttribute('style',(el.getAttribute('style')||'')+';stroke:'+s+'!important');
-  });
-  tmpDiv.querySelectorAll('svg line, svg path').forEach(el=>{
-    const s = el.getAttribute('stroke');
-    if(s && s!=='none') el.setAttribute('style',(el.getAttribute('style')||'')+';stroke:'+s+'!important');
-  });
-  tmpDiv.querySelectorAll('svg text').forEach(el=>{
-    const f = el.getAttribute('fill');
-    if(f) el.setAttribute('style',(el.getAttribute('style')||'')+';fill:'+f+'!important');
-  });
-  const bodyWithStyles = tmpDiv.innerHTML;
-
-  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${bodyWithStyles}</body></html>`);
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="color-scheme" content="light only"><style>*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}${css}</style></head><body>${body}</body></html>`);
   pw.document.close();
   pw.focus();
   setTimeout(()=>{pw.print();},800);
@@ -1342,10 +1282,10 @@ function d1SVG(id){
   <text id="d1svgBH-${id}" x="155" y="275" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="blue" transform="rotate(-90 155 275)">Base Height: 45</text>
   <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
   <text id="d1svgTH-${id}" x="100" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="red" transform="rotate(-90 100 280)">Total H: 84 1/2</text>
-  <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
-  <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
-  <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
-  <rect id="d1RR-${id}" x="520" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
+  <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="#dd1111" stroke="black" stroke-width="2" style="fill:#dd1111"/>
+  <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" style="fill:#f5d800"/>
+  <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" style="fill:#f5d800"/>
+  <rect id="d1RR-${id}" x="520" y="395" width="45" height="45" fill="#dd1111" stroke="black" stroke-width="2" style="fill:#dd1111"/>
   <text id="d1svgBW-${id}" x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="blue">Base Width: 39 1/2</text>
   <line x1="220" y1="470" x2="520" y2="470" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
@@ -1480,10 +1420,10 @@ function d2SVG(id){
   <text id="d2svgBH-${id}" x="158" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000" transform="rotate(-90 158 280)">BASE HEIGHT: 45</text>
   <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
   <text id="d2svgTH-${id}" x="110" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff" transform="rotate(-90 110 280)">Total H: 84 1/2</text>
-  <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
-  <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
-  <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
-  <rect id="d2RO-${id}" x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
+  <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" style="fill:#ff8c00"/>
+  <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" style="fill:#00bfff"/>
+  <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" style="fill:#00bfff"/>
+  <rect id="d2RO-${id}" x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" style="fill:#ff8c00"/>
   <text id="d2svgBW-${id}" x="390" y="512" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000">BASE WIDTH: 39 1/2</text>
   <line x1="240" y1="528" x2="540" y2="528" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <line x1="195" y1="565" x2="585" y2="565" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
