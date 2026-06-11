@@ -692,67 +692,22 @@ function doPrint(){
     const pgClass = dhMm > 65 ? 'pg1-card' : 'pg2-card';
 
     if(pgClass === 'pg1-card'){
-      // Build HTML colored boxes (bypass SVG fill rendering issues on Android Chrome PDF)
-      let boxesHTML = null;
-      const bs2 = '-webkit-print-color-adjust:exact;print-color-adjust:exact;width:16px;height:16px;border:2px solid #222;display:block;flex-shrink:0;';
-      if(dv.type==='t1'){
-        const bx1=dv.boxes||{LR:true,LY:true,RY:true,RR:true};
-        const cLR=bx1.LR!==false?'#dd1111':'#ccc', cLY=bx1.LY!==false?'#f5d800':'#ccc';
-        const cRY=bx1.RY!==false?'#f5d800':'#ccc', cRR=bx1.RR!==false?'#dd1111':'#ccc';
-        boxesHTML = {
-          left: `<div style="${bs2}background:${cLR}"></div><div style="${bs2}background:${cLY}"></div>`,
-          right: `<div style="${bs2}background:${cRY}"></div><div style="${bs2}background:${cRR}"></div>`
-        };
-      } else if(dv.type==='t2'){
-        const bx2=dv.boxes||{LO:true,LB:true,RB:true,RO:true};
-        const cLO=bx2.LO!==false?'#ff8c00':'#ccc', cLB=bx2.LB!==false?'#00bfff':'#ccc';
-        const cRB=bx2.RB!==false?'#00bfff':'#ccc', cRO=bx2.RO!==false?'#ff8c00':'#ccc';
-        boxesHTML = {
-          left: `<div style="${bs2}background:${cLO}"></div><div style="${bs2}background:${cLB}"></div>`,
-          right: `<div style="${bs2}background:${cRB}"></div><div style="${bs2}background:${cRO}"></div>`
-        };
-      }
 
-      // Extract viewBox from svgHTML to calculate aspect ratio
-      const vbMatch = svgHTML.match(/viewBox=["']([^"']+)["']/);
-      let svgAspect = 650/680; // default
-      if(vbMatch){
-        const parts = vbMatch[1].trim().split(/\s+/);
-        if(parts.length===4) svgAspect = parseFloat(parts[3])/parseFloat(parts[2]);
-      }
-      // Card width = 95mm at 96dpi = 358px
-      const cardWidthPx = 358;
-      const detPx = 175; // details section height in px
-      const svgWidthPx = cardWidthPx - 4;
-      const svgHeightPx = Math.round(svgWidthPx * svgAspect);
-      const cardHeightPx = detPx + svgHeightPx + 30;
+      // Keep SVG viewBox intact, just force 100% fill of container
+      const svgFinal = svgHTML
+        .replace(/(<svg\b[^>]*?)style="[^"]*"/,'$1')
+        .replace(/(<svg\b[^>]*?)width="[^"]*"/,'$1')
+        .replace(/(<svg\b[^>]*?)height="[^"]*"/,'$1')
+        .replace(/(<svg\b)/,'$1 width="100%" height="100%" style="-webkit-print-color-adjust:exact;print-color-adjust:exact;"');
 
-      const svgFinal = svgHTML.replace(
-        /viewBox=["'][^"']+["']/g, ''
-      ).replace(
-        /width=["'][^"']+["']/g, ''
-      ).replace(
-        /height=["'][^"']+["']/g, ''
-      ).replace(
-        /(<svg\b)/,
-        '$1 viewBox="' + (vbMatch ? vbMatch[1] : '0 0 750 730') + '" width="' + svgWidthPx + '" height="' + svgHeightPx + '" style="display:block;width:100%;height:100%;" preserveAspectRatio="xMidYMid meet"'
-      );
-      // SVG viewBox 0 0 580 480. Door rect x=160 y=20 w=280 h=300 (ends y=320).
-      // Boxes should be at door bottom corners: y≈270 (56.25% of 480), x=160 left edge, x=420 right edge
-      // In % of rendered SVG: left boxes at left=27.6%, right boxes at right=24.1%, top=56%
-      const bs = 'width:16px;height:16px;border:2px solid #222;display:block;-webkit-print-color-adjust:exact;print-color-adjust:exact;flex-shrink:0;';
-      const boxOverlay = boxesHTML ? `<div style="position:absolute;top:56%;left:0;right:0;display:flex;align-items:flex-start;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
-        <div style="margin-left:27.6%;display:flex;gap:1px;">${boxesHTML.left}</div>
-        <div style="flex:1;"></div>
-        <div style="margin-right:24.1%;display:flex;gap:1px;">${boxesHTML.right}</div>
-      </div>` : '';
+      const cardH = dhMm;
 
-      return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardHeightPx + 'px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;padding:1.5mm 2mm 2mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
+      return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardH + 'mm;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;padding:1.5mm 2mm 2mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
-        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost && dv.type==='t1' ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + (dv.totalCost && dv.type==='t2' ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
+        + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
         + topHTML
         + '</div>'
-        + '<div style="flex:1 1 auto;width:100%;min-height:0;line-height:0;overflow:hidden;position:relative;">' + svgFinal + boxOverlay + '</div>'
+        + '<div style="flex:1 1 auto;width:100%;min-height:0;overflow:hidden;">' + svgFinal + '</div>'
         + '</div>';
     }
 
