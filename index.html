@@ -565,14 +565,14 @@ function doPrint(){
           <div class="tot-row"><span class="tl dk">TOTAL H:</span><span class="tv bold-val dk-val">${frac(dv.h)}</span></div>
           <div class="tot-row"><span class="tl dk">TOTAL W:</span><span class="tv bold-val dk-val">${frac(dv.w)}</span></div>
         </div>`;
-      const ro=dv.red?'#dd1111':'#eeeeee', bo=dv.blue?'#2244cc':'#eeeeee';
+      const ro=dv.red?'1':'0.15', bo=dv.blue?'1':'0.15';
       svgHTML=`<svg viewBox="0 0 680 650" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs><marker id="wa${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#c8a000" stroke-width="2"/></marker></defs>
         <rect x="160" y="30" width="240" height="320" stroke="black" stroke-width="5" fill="white"/>
-        <rect x="110" y="65" width="52" height="48" rx="6" fill="${ro}" stroke="black" stroke-width="2"/>
-        <rect x="110" y="240" width="52" height="48" rx="6" fill="${ro}" stroke="black" stroke-width="2"/>
-        <rect x="400" y="65" width="52" height="48" rx="6" fill="${bo}" stroke="black" stroke-width="2"/>
-        <rect x="400" y="240" width="52" height="48" rx="6" fill="${bo}" stroke="black" stroke-width="2"/>
+        <rect x="110" y="65" width="52" height="48" rx="6" fill="#dd1111" stroke="black" stroke-width="2" fill-opacity="${ro}"/>
+        <rect x="110" y="240" width="52" height="48" rx="6" fill="#dd1111" stroke="black" stroke-width="2" fill-opacity="${ro}"/>
+        <rect x="400" y="65" width="52" height="48" rx="6" fill="#2244cc" stroke="black" stroke-width="2" fill-opacity="${bo}"/>
+        <rect x="400" y="240" width="52" height="48" rx="6" fill="#2244cc" stroke="black" stroke-width="2" fill-opacity="${bo}"/>
         <line x1="48" y1="30" x2="48" y2="350" stroke="#c8a000" stroke-width="4" marker-start="url(#wa${id})" marker-end="url(#wa${id})"/>
         <text x="22" y="190" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#cc0000" transform="rotate(-90 22 190)">HEIGHT: ${frac(dv.h)}</text>
         <line x1="160" y1="375" x2="400" y2="375" stroke="#c8a000" stroke-width="4" marker-start="url(#wa${id})" marker-end="url(#wa${id})"/>
@@ -609,25 +609,29 @@ function doPrint(){
           </div>
         </div>` : ''}
         `;
-      svgHTML=`<svg viewBox="0 0 580 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
+      svgHTML=`<svg viewBox="0 0 680 650" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs>
           <marker id="ar${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="red" stroke-width="1.8"/></marker>
           <marker id="ab${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="blue" stroke-width="1.8"/></marker>
         </defs>
-        <rect x="160" y="20" width="280" height="300" stroke="black" stroke-width="4" fill="white"/>
-        <circle cx="194" cy="55" r="28" stroke="black" stroke-width="3" fill="${mL}"/>
-        <text x="194" y="63" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="22" fill="#222">L</text>
-        <circle cx="406" cy="55" r="28" stroke="black" stroke-width="3" fill="${mR}"/>
-        <text x="406" y="63" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="22" fill="red">R</text>
-        <line x1="120" y1="20" x2="120" y2="320" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
-        <text x="98" y="185" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="blue" transform="rotate(-90 98 185)">Base H: ${frac(dv.bh)}</text>
-        <line x1="65" y1="20" x2="65" y2="370" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="40" y="200" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="20" fill="red" transform="rotate(-90 40 200)">Total H: ${frac(th)}</text>
-        <text x="300" y="358" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="20" fill="blue">Base W: ${frac(dv.bw)}</text>
-        <line x1="160" y1="370" x2="440" y2="370" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
-        <line x1="120" y1="395" x2="480" y2="395" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
-        <text x="300" y="425" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="20" fill="red">Total W: ${frac(tw)}</text>
-        <text x="300" y="195" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="34" fill="#111" opacity="0.18">${(th*tw/144).toFixed(2)} sq ft</text>
+        <rect x="220" y="60" width="300" height="380" stroke="black" stroke-width="4" fill="white"/>
+        <circle cx="258" cy="98" r="36" stroke="black" stroke-width="3" fill="${mL}"/>
+        <text x="258" y="106" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="24" fill="#222">L</text>
+        <circle cx="482" cy="98" r="36" stroke="black" stroke-width="3" fill="${mR}"/>
+        <text x="482" y="106" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="24" fill="red">R</text>
+        <line x1="175" y1="60" x2="175" y2="440" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
+        <text x="150" y="260" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="blue" transform="rotate(-90 150 260)">Base H: ${frac(dv.bh)}</text>
+        <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
+        <text x="68" y="270" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red" transform="rotate(-90 68 270)">Total H: ${frac(th)}</text>
+        <rect x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oLR}"/>
+        <rect x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oLY}"/>
+        <rect x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" fill-opacity="${oRY}"/>
+        <rect x="520" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2" fill-opacity="${oRR}"/>
+        <text x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="blue">Base W: ${frac(dv.bw)}</text>
+        <line x1="220" y1="475" x2="520" y2="475" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
+        <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
+        <text x="370" y="550" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="26" fill="red">Total W: ${frac(tw)}</text>
+        <text x="370" y="285" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
 
     } else {
@@ -654,25 +658,29 @@ function doPrint(){
           ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
         </div>`:''}
         `;
-      svgHTML=`<svg viewBox="0 0 580 480" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
+      svgHTML=`<svg viewBox="0 0 750 760" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs>
           <marker id="atw${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#1a1aff" stroke-width="1.8"/></marker>
           <marker id="abr${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#8b0000" stroke-width="1.8"/></marker>
         </defs>
-        <rect x="160" y="20" width="280" height="300" stroke="#111" stroke-width="4" fill="white"/>
-        <line x1="160" y1="95" x2="440" y2="95" stroke="#111" stroke-width="3"/>
-        <line x1="300" y1="20" x2="300" y2="95" stroke="#111" stroke-width="3"/>
-        <text x="230" y="70" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#1a1aff">${lL}</text>
-        <text x="370" y="70" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="42" fill="#cc0000">${rL}</text>
-        <line x1="120" y1="20" x2="120" y2="320" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
-        <text x="97" y="185" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#8b0000" transform="rotate(-90 97 185)">BASE H: ${frac(dv.bh)}</text>
-        <line x1="65" y1="20" x2="65" y2="370" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="40" y="200" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#1a1aff" transform="rotate(-90 40 200)">Total H: ${frac(th)}</text>
-        <text x="300" y="358" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
-        <line x1="160" y1="370" x2="440" y2="370" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
-        <line x1="120" y1="395" x2="480" y2="395" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
-        <text x="300" y="425" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#1a1aff">Total W: ${frac(tw)}</text>
-        <text x="300" y="210" text-anchor="middle" font-family="Arial" font-size="34" font-weight="bold" fill="#111" opacity="0.18">${(th*tw/144).toFixed(2)} sq ft</text>
+        <rect x="240" y="60" width="300" height="390" stroke="#111" stroke-width="4" fill="white"/>
+        <line x1="240" y1="165" x2="540" y2="165" stroke="#111" stroke-width="3"/>
+        <line x1="390" y1="60" x2="390" y2="165" stroke="#111" stroke-width="3"/>
+        <text x="315" y="130" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="52" fill="#1a1aff">${lL}</text>
+        <text x="465" y="130" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="52" fill="#cc0000">${rL}</text>
+        <line x1="182" y1="60" x2="182" y2="450" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
+        <text x="155" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000" transform="rotate(-90 155 265)">BASE H: ${frac(dv.bh)}</text>
+        <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
+        <text x="82" y="265" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff" transform="rotate(-90 82 265)">Total H: ${frac(th)}</text>
+        <rect x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oLO}"/>
+        <rect x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oLB}"/>
+        <rect x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" fill-opacity="${oRB}"/>
+        <rect x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" fill-opacity="${oRO}"/>
+        <text x="390" y="510" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#8b0000">BASE W: ${frac(dv.bw)}</text>
+        <line x1="240" y1="525" x2="540" y2="525" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
+        <line x1="195" y1="562" x2="585" y2="562" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
+        <text x="390" y="598" text-anchor="middle" font-family="Arial" font-size="26" font-weight="bold" fill="#1a1aff">Total W: ${frac(tw)}</text>
+        <text x="410" y="335" text-anchor="middle" font-family="Arial" font-size="42" font-weight="bold" fill="#111" opacity="0.22">${(th*tw/144).toFixed(2)} sq ft</text>
       </svg>`;
     }
 
@@ -680,27 +688,6 @@ function doPrint(){
     const pgClass = dhMm > 65 ? 'pg1-card' : 'pg2-card';
 
     if(pgClass === 'pg1-card'){
-      // Build HTML colored boxes (bypass SVG fill rendering issues on Android Chrome PDF)
-      let boxesHTML = null;
-      const bs2 = '-webkit-print-color-adjust:exact;print-color-adjust:exact;width:16px;height:16px;border:2px solid #222;display:block;flex-shrink:0;';
-      if(dv.type==='t1'){
-        const bx1=dv.boxes||{LR:true,LY:true,RY:true,RR:true};
-        const cLR=bx1.LR!==false?'#dd1111':'#ccc', cLY=bx1.LY!==false?'#f5d800':'#ccc';
-        const cRY=bx1.RY!==false?'#f5d800':'#ccc', cRR=bx1.RR!==false?'#dd1111':'#ccc';
-        boxesHTML = {
-          left: `<div style="${bs2}background:${cLR}"></div><div style="${bs2}background:${cLY}"></div>`,
-          right: `<div style="${bs2}background:${cRY}"></div><div style="${bs2}background:${cRR}"></div>`
-        };
-      } else if(dv.type==='t2'){
-        const bx2=dv.boxes||{LO:true,LB:true,RB:true,RO:true};
-        const cLO=bx2.LO!==false?'#ff8c00':'#ccc', cLB=bx2.LB!==false?'#00bfff':'#ccc';
-        const cRB=bx2.RB!==false?'#00bfff':'#ccc', cRO=bx2.RO!==false?'#ff8c00':'#ccc';
-        boxesHTML = {
-          left: `<div style="${bs2}background:${cLO}"></div><div style="${bs2}background:${cLB}"></div>`,
-          right: `<div style="${bs2}background:${cRB}"></div><div style="${bs2}background:${cRO}"></div>`
-        };
-      }
-
       // Extract viewBox from svgHTML to calculate aspect ratio
       const vbMatch = svgHTML.match(/viewBox=["']([^"']+)["']/);
       let svgAspect = 650/680; // default
@@ -725,22 +712,12 @@ function doPrint(){
         /(<svg\b)/,
         '$1 viewBox="' + (vbMatch ? vbMatch[1] : '0 0 750 730') + '" width="' + svgWidthPx + '" height="' + svgHeightPx + '" style="display:block;width:100%;height:100%;" preserveAspectRatio="xMidYMid meet"'
       );
-      // SVG viewBox 0 0 580 480. Door rect x=160 y=20 w=280 h=300 (ends y=320).
-      // Boxes should be at door bottom corners: y≈270 (56.25% of 480), x=160 left edge, x=420 right edge
-      // In % of rendered SVG: left boxes at left=27.6%, right boxes at right=24.1%, top=56%
-      const bs = 'width:16px;height:16px;border:2px solid #222;display:block;-webkit-print-color-adjust:exact;print-color-adjust:exact;flex-shrink:0;';
-      const boxOverlay = boxesHTML ? `<div style="position:absolute;top:56%;left:0;right:0;display:flex;align-items:flex-start;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
-        <div style="margin-left:27.6%;display:flex;gap:1px;">${boxesHTML.left}</div>
-        <div style="flex:1;"></div>
-        <div style="margin-right:24.1%;display:flex;gap:1px;">${boxesHTML.right}</div>
-      </div>` : '';
-
       return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardHeightPx + 'px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;padding:1.5mm 2mm 2mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
         + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost && dv.type==='t1' ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + (dv.totalCost && dv.type==='t2' ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
         + topHTML
         + '</div>'
-        + '<div style="flex:1 1 auto;width:100%;min-height:0;line-height:0;overflow:hidden;position:relative;">' + svgFinal + boxOverlay + '</div>'
+        + '<div style="flex:1 1 auto;width:100%;min-height:0;line-height:0;overflow:hidden;">' + svgFinal + '</div>'
         + '</div>';
     }
 
@@ -870,11 +847,8 @@ function doPrint(){
 
   /* ── print CSS ── */
   const css=`
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  body{font-family:Arial,sans-serif;background:white;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  svg{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  svg *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  rect[fill]{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-family:Arial,sans-serif;background:white}
   @page{size:A4 portrait;margin:5mm}
 
   /* watermark */
@@ -1133,7 +1107,30 @@ function doPrint(){
   `;
 
   const pw=window.open('','_blank','width=900,height=700');
-  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="color-scheme" content="light only"><style>*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}${css}</style></head><body>${body}</body></html>`);
+  // Force SVG colors for Chrome PDF printing
+  const _tmp = document.createElement('div');
+  _tmp.innerHTML = body;
+  _tmp.querySelectorAll('svg rect, svg circle').forEach(el => {
+    const f = el.getAttribute('fill');
+    if(f && f!=='none' && f.toLowerCase()!=='white' && f!=='#fff' && f!=='#ffffff'){
+      el.setAttribute('style',(el.getAttribute('style')||'')+';fill:'+f+'!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important');
+    }
+    const fo = el.getAttribute('fill-opacity');
+    if(fo && parseFloat(fo) < 0.5){
+      el.setAttribute('style',(el.getAttribute('style')||'')+';opacity:'+fo);
+    }
+  });
+  _tmp.querySelectorAll('svg line, svg path').forEach(el => {
+    const s = el.getAttribute('stroke');
+    if(s && s!=='none') el.setAttribute('style',(el.getAttribute('style')||'')+';stroke:'+s+'!important');
+  });
+  _tmp.querySelectorAll('svg text').forEach(el => {
+    const f = el.getAttribute('fill');
+    if(f) el.setAttribute('style',(el.getAttribute('style')||'')+';fill:'+f+'!important');
+  });
+  const _body2 = _tmp.innerHTML;
+
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}</style></head><body>${_body2}</body></html>`);
   pw.document.close();
   pw.focus();
   setTimeout(()=>{pw.print();},800);
@@ -1305,10 +1302,10 @@ function d1SVG(id){
   <text id="d1svgBH-${id}" x="155" y="275" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="blue" transform="rotate(-90 155 275)">Base Height: 45</text>
   <line x1="100" y1="60" x2="100" y2="485" stroke="red" stroke-width="3" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
   <text id="d1svgTH-${id}" x="100" y="280" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="red" transform="rotate(-90 100 280)">Total H: 84 1/2</text>
-  <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="#dd1111" stroke="black" stroke-width="2" style="fill:#dd1111"/>
-  <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" style="fill:#f5d800"/>
-  <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2" style="fill:#f5d800"/>
-  <rect id="d1RR-${id}" x="520" y="395" width="45" height="45" fill="#dd1111" stroke="black" stroke-width="2" style="fill:#dd1111"/>
+  <rect id="d1LR-${id}" x="175" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
+  <rect id="d1LY-${id}" x="220" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
+  <rect id="d1RY-${id}" x="475" y="395" width="45" height="45" fill="#f5d800" stroke="black" stroke-width="2"/>
+  <rect id="d1RR-${id}" x="520" y="395" width="45" height="45" fill="red" stroke="black" stroke-width="2"/>
   <text id="d1svgBW-${id}" x="370" y="462" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="28" fill="blue">Base Width: 39 1/2</text>
   <line x1="220" y1="470" x2="520" y2="470" stroke="blue" stroke-width="2.5" marker-start="url(#d1ab${id})" marker-end="url(#d1ab${id})"/>
   <line x1="175" y1="512" x2="565" y2="512" stroke="red" stroke-width="2.5" marker-start="url(#d1ar${id})" marker-end="url(#d1ar${id})"/>
@@ -1443,10 +1440,10 @@ function d2SVG(id){
   <text id="d2svgBH-${id}" x="158" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000" transform="rotate(-90 158 280)">BASE HEIGHT: 45</text>
   <line x1="110" y1="60" x2="110" y2="450" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
   <text id="d2svgTH-${id}" x="110" y="280" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#1a1aff" transform="rotate(-90 110 280)">Total H: 84 1/2</text>
-  <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" style="fill:#ff8c00"/>
-  <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" style="fill:#00bfff"/>
-  <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2" style="fill:#00bfff"/>
-  <rect id="d2RO-${id}" x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2" style="fill:#ff8c00"/>
+  <rect id="d2LO-${id}" x="195" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
+  <rect id="d2LB-${id}" x="240" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
+  <rect id="d2RB-${id}" x="495" y="405" width="45" height="45" fill="#00bfff" stroke="#111" stroke-width="2"/>
+  <rect id="d2RO-${id}" x="540" y="405" width="45" height="45" fill="#ff8c00" stroke="#111" stroke-width="2"/>
   <text id="d2svgBW-${id}" x="390" y="512" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8b0000">BASE WIDTH: 39 1/2</text>
   <line x1="240" y1="528" x2="540" y2="528" stroke="#8b0000" stroke-width="2.5" marker-start="url(#d2abr${id})" marker-end="url(#d2abr${id})"/>
   <line x1="195" y1="565" x2="585" y2="565" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#d2atw${id})" marker-end="url(#d2atw${id})"/>
