@@ -656,8 +656,8 @@ function doPrint(){
         </div>
         ${(dv.coveringCost||dv.sqftPrice2) ? `
         <div style="margin-top:3px;border-top:1.5px solid #cc000033;padding-top:3px;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-          ${dv.coveringCost?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Covering Cost</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.coveringCost).toLocaleString()}/=</div></div>`:''}
-          ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
+          ${dv.coveringCost?`<div style="display:flex;flex-direction:column;gap:2px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Covering Cost</label><div style="font-size:12px;font-weight:700;color:#1a2340;padding:3px 6px;background:#eef;border-radius:3px;border:1px solid #99b">Rs. ${Math.round(dv.coveringCost).toLocaleString()}/=</div></div>`:''}
+          ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:2px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:12px;font-weight:700;color:#1a2340;padding:3px 6px;background:#eef;border-radius:3px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
         </div>`:''}
         `;
       const cLO2=bx2.LO!==false?'#ff8c00':'#cccccc', cLB2=bx2.LB!==false?'#00bfff':'#cccccc';
