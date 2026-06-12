@@ -513,7 +513,8 @@ function doPrint(){
         type:'wg',
         h: parseFloat(document.getElementById('wg-h-'+id).value)||0,
         w: parseFloat(document.getElementById('wg-w-'+id).value)||0,
-        red: d.red, blue: d.blue
+        red: d.red, blue: d.blue,
+        totalCost: d.totalCost || 0
       };
     } else if(t==='t1'){
       return {
@@ -565,7 +566,13 @@ function doPrint(){
           <div class="tot-row"><span class="tl dk">TOTAL H:</span><span class="tv bold-val dk-val">${frac(dv.h)}</span></div>
           <div class="tot-row"><span class="tl dk">TOTAL W:</span><span class="tv bold-val dk-val">${frac(dv.w)}</span></div>
         </div>`;
-      const ro=dv.red?'#dd1111':'#eeeeee', bo=dv.blue?'#2244cc':'#eeeeee';
+      const ro=dv.red?'#dd1111':'white', bo=dv.blue?'#2244cc':'white';
+      if(dv.totalCost){
+        topHTML += `<div style="margin-top:3px;background:#1a2340;border-radius:5px;padding:5px 8px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#f5d800;font-size:10px;font-weight:700;">TOTAL COST =</span>
+          <span style="color:#f5d800;font-weight:900;font-size:13px;">Rs. \${Math.round(dv.totalCost).toLocaleString()}/=</span>
+        </div>`;
+      }
       svgHTML=`<svg viewBox="0 0 680 650" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
         <defs><marker id="wa${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#c8a000" stroke-width="2"/></marker></defs>
         <rect x="160" y="30" width="240" height="320" stroke="black" stroke-width="5" fill="white"/>
@@ -609,8 +616,8 @@ function doPrint(){
           </div>
         </div>` : ''}
         `;
-      const cLR2=bx1.LR!==false?'#dd1111':'#cccccc', cLY2=bx1.LY!==false?'#f5d800':'#cccccc';
-      const cRY2=bx1.RY!==false?'#f5d800':'#cccccc', cRR2=bx1.RR!==false?'#dd1111':'#cccccc';
+      const cLR2=bx1.LR!==false?'#dd1111':'white', cLY2=bx1.LY!==false?'#f5d800':'white';
+      const cRY2=bx1.RY!==false?'#f5d800':'white', cRR2=bx1.RR!==false?'#dd1111':'white';
       svgHTML=`<svg viewBox="0 0 580 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
         <defs>
           <marker id="ar${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="red" stroke-width="1.8"/></marker>
@@ -621,10 +628,7 @@ function doPrint(){
         <text x="210" y="67" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="24" fill="#222">L</text>
         <circle cx="420" cy="58" r="30" stroke="black" stroke-width="3" fill="${mR}"/>
         <text x="420" y="67" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="24" fill="red">R</text>
-        <rect x="132" y="295" width="38" height="35" fill="${cLR2}" stroke="#111" stroke-width="2" style="fill:${cLR2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
-        <rect x="170" y="295" width="38" height="35" fill="${cLY2}" stroke="#111" stroke-width="2" style="fill:${cLY2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
-        <rect x="422" y="295" width="38" height="35" fill="${cRY2}" stroke="#111" stroke-width="2" style="fill:${cRY2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
-        <rect x="460" y="295" width="38" height="35" fill="${cRR2}" stroke="#111" stroke-width="2" style="fill:${cRR2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
+
         <line x1="128" y1="20" x2="128" y2="330" stroke="blue" stroke-width="2.5" marker-start="url(#ab${id})" marker-end="url(#ab${id})"/>
         <text x="104" y="190" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="blue" transform="rotate(-90 104 190)">Base Height: ${frac(dv.bh)}</text>
         <line x1="68" y1="20" x2="68" y2="380" stroke="red" stroke-width="2.5" marker-start="url(#ar${id})" marker-end="url(#ar${id})"/>
@@ -656,12 +660,12 @@ function doPrint(){
         </div>
         ${(dv.coveringCost||dv.sqftPrice2) ? `
         <div style="margin-top:3px;border-top:1.5px solid #cc000033;padding-top:3px;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-          ${dv.coveringCost?`<div style="display:flex;flex-direction:column;gap:2px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Covering Cost</label><div style="font-size:12px;font-weight:700;color:#1a2340;padding:3px 6px;background:#eef;border-radius:3px;border:1px solid #99b">Rs. ${Math.round(dv.coveringCost).toLocaleString()}/=</div></div>`:''}
-          ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:2px"><label style="font-size:9px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:12px;font-weight:700;color:#1a2340;padding:3px 6px;background:#eef;border-radius:3px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
+          ${dv.coveringCost?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:6px;font-weight:700;color:#444;text-transform:uppercase">Covering Cost</label><div style="font-size:8px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.coveringCost).toLocaleString()}/=</div></div>`:''}
+          ${dv.sqftPrice2?`<div style="display:flex;flex-direction:column;gap:1px"><label style="font-size:11px;font-weight:700;color:#444;text-transform:uppercase">Price/sq ft</label><div style="font-size:13px;font-weight:700;color:#1a2340;padding:2px 4px;background:#eef;border-radius:2px;border:1px solid #99b">Rs. ${Math.round(dv.sqftPrice2).toLocaleString()}/=</div></div>`:''}
         </div>`:''}
         `;
-      const cLO2=bx2.LO!==false?'#ff8c00':'#cccccc', cLB2=bx2.LB!==false?'#00bfff':'#cccccc';
-      const cRB2=bx2.RB!==false?'#00bfff':'#cccccc', cRO2=bx2.RO!==false?'#ff8c00':'#cccccc';
+      const cLO2=bx2.LO!==false?'#ff8c00':'white', cLB2=bx2.LB!==false?'#00bfff':'white';
+      const cRB2=bx2.RB!==false?'#00bfff':'white', cRO2=bx2.RO!==false?'#ff8c00':'white';
       svgHTML=`<svg viewBox="0 0 580 490" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
         <defs>
           <marker id="atw${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#1a1aff" stroke-width="1.8"/></marker>
@@ -672,10 +676,7 @@ function doPrint(){
         <line x1="315" y1="20" x2="315" y2="100" stroke="#111" stroke-width="3"/>
         <text x="242" y="75" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="46" fill="#1a1aff">${lL}</text>
         <text x="388" y="75" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="46" fill="#cc0000">${rL}</text>
-        <rect x="132" y="295" width="38" height="35" fill="${cLO2}" stroke="#111" stroke-width="2" style="fill:${cLO2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
-        <rect x="170" y="295" width="38" height="35" fill="${cLB2}" stroke="#111" stroke-width="2" style="fill:${cLB2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
-        <rect x="422" y="295" width="38" height="35" fill="${cRB2}" stroke="#111" stroke-width="2" style="fill:${cRB2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
-        <rect x="460" y="295" width="38" height="35" fill="${cRO2}" stroke="#111" stroke-width="2" style="fill:${cRO2};-webkit-print-color-adjust:exact;print-color-adjust:exact;"/>
+
         <line x1="128" y1="20" x2="128" y2="330" stroke="#8b0000" stroke-width="2.5" marker-start="url(#abr${id})" marker-end="url(#abr${id})"/>
         <text x="104" y="190" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#8b0000" transform="rotate(-90 104 190)">BASE HEIGHT: ${frac(dv.bh)}</text>
         <line x1="68" y1="20" x2="68" y2="380" stroke="#1a1aff" stroke-width="2.5" marker-start="url(#atw${id})" marker-end="url(#atw${id})"/>
@@ -702,12 +703,43 @@ function doPrint(){
 
       const cardH = dhMm;
 
+      // Build HTML color boxes (bypass SVG fill rendering issues)
+      const _bs = 'display:inline-block;width:14px;height:14px;border:1.5px solid #333;-webkit-print-color-adjust:exact;print-color-adjust:exact;flex-shrink:0;';
+      let boxHTML = '';
+      if(dv.type==='t1'){
+        const bx1=dv.boxes||{LR:true,LY:true,RY:true,RR:true};
+        // D01 viewBox 580x490, door bottom at y=330 → 67.3% from top → 32.7% from bottom
+        // LR:x=132,LY:x=170 | RY:x=422,RR:x=460  (each w=38)
+        const _b = 'position:absolute;width:7%;height:8%;-webkit-print-color-adjust:exact;print-color-adjust:exact;border:1.5px solid #333;box-sizing:border-box;';
+        const _bAct = _b;
+        const _bInact = 'position:absolute;width:7%;height:8%;box-sizing:border-box;background:transparent;border:none;opacity:0;';
+        boxHTML = ''
+          + '<div style="'+(bx1.LR!==false?_bAct+'background:#dd1111;':_bInact)+'bottom:31%;left:22.4%;"></div>'
+          + '<div style="'+(bx1.LY!==false?_bAct+'background:#f5d800;':_bInact)+'bottom:31%;left:29%;"></div>'
+          + '<div style="'+(bx1.RY!==false?_bAct+'background:#f5d800;':_bInact)+'bottom:31%;right:20%;"></div>'
+          + '<div style="'+(bx1.RR!==false?_bAct+'background:#dd1111;':_bInact)+'bottom:31%;right:13%;"></div>';
+      } else if(dv.type==='t2'){
+        const bx2=dv.boxes||{LO:true,LB:true,RB:true,RO:true};
+        // D02 viewBox 580x490 same positions
+        const _b = 'position:absolute;width:7%;height:8%;-webkit-print-color-adjust:exact;print-color-adjust:exact;border:1.5px solid #333;box-sizing:border-box;';
+        const _bAct2 = _b;
+        const _bInact2 = 'position:absolute;width:7%;height:8%;box-sizing:border-box;background:transparent;border:none;opacity:0;';
+        boxHTML = ''
+          + '<div style="'+(bx2.LO!==false?_bAct2+'background:#ff8c00;':_bInact2)+'bottom:31%;left:22.4%;"></div>'
+          + '<div style="'+(bx2.LB!==false?_bAct2+'background:#00bfff;':_bInact2)+'bottom:31%;left:29%;"></div>'
+          + '<div style="'+(bx2.RB!==false?_bAct2+'background:#00bfff;':_bInact2)+'bottom:31%;right:20%;"></div>'
+          + '<div style="'+(bx2.RO!==false?_bAct2+'background:#ff8c00;':_bInact2)+'bottom:31%;right:13%;"></div>';
+      }
+
       return '<div class="pg1-card card ' + (lCls==='lblwg'?'twg':lCls==='lbl1'?'t1':'t2') + '" style="width:95mm;height:' + cardH + 'mm;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;padding:1.5mm 2mm 2mm 2mm;border-radius:4px;border:1.5px solid #ccd;background:white;">'
         + '<div style="flex:0 0 auto;overflow:hidden;margin-bottom:2px;">'
         + '<div class="dh" style="margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;"><span class="badge ' + lCls + '">' + lTxt + ' (' + String(num).padStart(2,'0') + ')</span>' + (dv.totalCost ? '<span style="font-size:18px;font-weight:900;color:#1a2340;background:#f5d800;padding:4px 12px;border-radius:4px;white-space:nowrap;letter-spacing:0.5px;">Total Cost: Rs. ' + Math.round(dv.totalCost).toLocaleString() + '/=</span>' : '') + '</div>'
         + topHTML
         + '</div>'
-        + '<div style="flex:1 1 auto;width:100%;min-height:0;overflow:hidden;">' + svgFinal + '</div>'
+        + '<div style="flex:1 1 auto;width:100%;min-height:0;overflow:hidden;position:relative;">' 
+        + svgFinal 
+        + boxHTML
+        + '</div>'
         + '</div>';
     }
 
@@ -1217,31 +1249,37 @@ function wgSVG(id){
   </svg>`;
 }
 function wgHTML(id){
-  return hdr(id,'wg')+`<div class="door-inner">
-  <div class="door-inputs">
-    <div class="inputs-grid">
-      <div class="finput"><label>Height</label><input type="number" id="wg-h-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
-      <div class="finput"><label>Width</label><input type="number" id="wg-w-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
+  return hdr(id,'wg')+`<div style="display:flex;flex-direction:column;gap:10px;width:100%;">
+  <div style="width:100%;">${wgSVG(id)}</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+    <div class="finput"><label>Height</label><input type="number" id="wg-h-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
+    <div class="finput"><label>Width</label><input type="number" id="wg-w-${id}" value="" step="0.5" oninput="wgUpdate(${id})"/></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+    <span style="font-size:11px;font-weight:700;color:#666;min-width:70px;">Active Boxes</span>
+    <button class="tog-btn red-btn active" id="wg-bR-${id}" onclick="wgToggle(${id},'red')">RED</button>
+    <button class="tog-btn blue-btn active" id="wg-bB-${id}" onclick="wgToggle(${id},'blue')">BLUE</button>
+  </div>
+  <div style="margin-top:4px;padding:7px;background:#f5f5f5;border-radius:8px;display:flex;flex-direction:column;gap:4px;">
+    <div style="display:flex;align-items:center;gap:3px;"><span style="font-size:11px;font-weight:700;color:#333;min-width:68px;">HEIGHT:</span><span class="tval" id="wg-oh-${id}">0</span></div>
+    <div style="display:flex;align-items:center;gap:3px;"><span style="font-size:11px;font-weight:700;color:#333;min-width:68px;">WIDTH:</span><span class="tval" id="wg-ow-${id}">0</span></div>
+    <div style="margin-top:4px;">
+      <label style="font-size:11px;font-weight:700;color:#666;display:block;margin-bottom:2px;">Total Cost (Rs)</label>
+      <input type="number" id="wg-totalCost-${id}" placeholder="0" step="100"
+        style="width:100%;padding:5px 7px;font-size:13px;font-weight:700;border-radius:6px;border:2px solid #ccc;color:#1a2340;box-sizing:border-box;"
+        oninput="wgCostUpdate(${id})"/>
     </div>
-    <div class="extra-controls">
-      <div class="ctrl-row">
-        <span class="ctrl-lbl">Active Boxes</span>
-        <button class="tog-btn red-btn active" id="wg-bR-${id}" onclick="wgToggle(${id},'red')">RED</button>
-        <button class="tog-btn blue-btn active" id="wg-bB-${id}" onclick="wgToggle(${id},'blue')">BLUE</button>
-      </div>
-    </div>
-    <div class="totals">
-      <div class="total-row"><span class="tlabel dk">HEIGHT:</span><span class="tval" id="wg-oh-${id}">84 1/2</span></div>
-      <div class="total-row"><span class="tlabel dk">WIDTH:</span><span class="tval" id="wg-ow-${id}">39 1/2</span></div>
+    <div style="margin-top:4px;background:#1a2340;border-radius:7px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="color:#f5d800;font-size:12px;font-weight:700;">TOTAL COST =</span>
+      <span id="wg-totalCostDisplay-${id}" style="color:#f5d800;font-weight:900;font-size:16px;">Rs. 0/=</span>
     </div>
   </div>
-  <div class="svg-preview">${wgSVG(id)}</div>
   </div>`;
 }
 function wgToggle(id,c){
   const d=doors.find(x=>x.id===id);
-  if(c==='red'){d.red=!d.red;document.getElementById('wg-bR-'+id).classList.toggle('active',d.red);const op=d.red?'1':'0.1';['wTL-','wBL-'].forEach(p=>document.getElementById(p+id).setAttribute('fill-opacity',op));}
-  else{d.blue=!d.blue;document.getElementById('wg-bB-'+id).classList.toggle('active',d.blue);const op=d.blue?'1':'0.1';['wTR-','wBR-'].forEach(p=>document.getElementById(p+id).setAttribute('fill-opacity',op));}
+  if(c==='red'){d.red=!d.red;document.getElementById('wg-bR-'+id).classList.toggle('active',d.red);['wTL-','wBL-'].forEach(p=>{const e=document.getElementById(p+id);e.setAttribute('fill',d.red?'#dd1111':'white');e.setAttribute('fill-opacity','1');e.style.fill=d.red?'#dd1111':'white';});}
+  else{d.blue=!d.blue;document.getElementById('wg-bB-'+id).classList.toggle('active',d.blue);['wTR-','wBR-'].forEach(p=>{const e=document.getElementById(p+id);e.setAttribute('fill',d.blue?'#2244cc':'white');e.setAttribute('fill-opacity','1');e.style.fill=d.blue?'#2244cc':'white';});}
 }
 function wgUpdate(id){
   const hEl=document.getElementById('wg-h-'+id);
@@ -1254,6 +1292,16 @@ function wgUpdate(id){
   document.getElementById('wsvgH-'+id).textContent='HEIGHT: '+frac(h);
   document.getElementById('wsvgW-'+id).textContent='WIDTH: '+frac(w);
   document.getElementById('wsvgArea-'+id).textContent=(h*w/144).toFixed(2)+' sq ft';
+  wgCostUpdate(id);
+}
+function wgCostUpdate(id){
+  const costEl=document.getElementById('wg-totalCost-'+id);
+  const dispEl=document.getElementById('wg-totalCostDisplay-'+id);
+  if(!costEl||!dispEl)return;
+  const cost=parseFloat(costEl.value)||0;
+  dispEl.textContent='Rs. '+Math.round(cost).toLocaleString()+'/=';
+  const d=doors.find(x=>x.id===id);
+  if(d)d.totalCost=cost;
 }
 
 /* ══ DOOR TYPE 1 ══ */
@@ -1367,7 +1415,11 @@ function d1CalcCost(id){
 function d1Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
   document.getElementById('d1-b'+key+'-'+id).classList.toggle('active',d.boxes[key]);
-  document.getElementById('d1'+key+'-'+id).setAttribute('fill-opacity',d.boxes[key]?'1':'0.1');
+  const activeColors={LR:'#dd1111',LY:'#f5d800',RY:'#f5d800',RR:'#dd1111'};
+  const el=document.getElementById('d1'+key+'-'+id);
+  el.setAttribute('fill',d.boxes[key]?activeColors[key]:'white');
+  el.setAttribute('fill-opacity','1');
+  el.style.fill=d.boxes[key]?activeColors[key]:'white';
 }
 function d1Update(id){
   const bhEl=document.getElementById('d1-bh-'+id);
@@ -1484,7 +1536,11 @@ function d2Combo(id,btn,l,r){
 function d2Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
   document.getElementById('d2-b'+key+'-'+id).classList.toggle('active',d.boxes[key]);
-  document.getElementById('d2'+key+'-'+id).setAttribute('fill-opacity',d.boxes[key]?'1':'0.1');
+  const activeColors2={LO:'#ff8c00',LB:'#00bfff',RB:'#00bfff',RO:'#ff8c00'};
+  const el2=document.getElementById('d2'+key+'-'+id);
+  el2.setAttribute('fill',d.boxes[key]?activeColors2[key]:'white');
+  el2.setAttribute('fill-opacity','1');
+  el2.style.fill=d.boxes[key]?activeColors2[key]:'white';
 }
 function d2Update(id){
   const bhEl2=document.getElementById('d2-bh-'+id);
