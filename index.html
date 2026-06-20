@@ -384,11 +384,7 @@ function formatWA(el){
   if(v.startsWith('94')) v = v.slice(2);
   if(v.startsWith('0')) v = v.slice(1);
   if(v.length > 9) v = v.slice(0,9);
-  let out = '+94';
-  if(v.length > 0) out += ' ' + v.slice(0,2);
-  if(v.length > 2) out += ' ' + v.slice(2,5);
-  if(v.length > 5) out += ' ' + v.slice(5,9);
-  el.value = out;
+  el.value = '+94' + v;
 }
 
 function frac(v){
@@ -781,18 +777,18 @@ function doPrint(){
     </div>
     <div class="info-row amounts-row">
       <!-- Door type sub-totals row -->
-      <div class="amount-box" style="border-color:#1a1aff44;background:#f0f4ff;flex:none;min-width:0;">
+      ${d1Sum > 0 ? `<div class="amount-box" style="border-color:#1a1aff44;background:#f0f4ff;flex:none;min-width:0;">
         <div class="amt-label" style="color:#1a1aff;">D 01) Total</div>
         <div class="amt-value" style="color:#1a1aff;font-size:14px;">${fmtAmt(d1Sum)}</div>
-      </div>
-      <div class="amount-box" style="border-color:#cc000044;background:#fff5f5;flex:none;min-width:0;">
+      </div>` : ''}
+      ${d2Sum > 0 ? `<div class="amount-box" style="border-color:#cc000044;background:#fff5f5;flex:none;min-width:0;">
         <div class="amt-label" style="color:#cc0000;">D 02) Total</div>
         <div class="amt-value" style="color:#cc0000;font-size:14px;">${fmtAmt(d2Sum)}</div>
-      </div>
-      <div class="amount-box" style="border-color:#c8a00044;background:#fffbf0;flex:none;min-width:0;">
+      </div>` : ''}
+      ${wgSum > 0 ? `<div class="amount-box" style="border-color:#c8a00044;background:#fffbf0;flex:none;min-width:0;">
         <div class="amt-label" style="color:#c8a000;">WG Total</div>
         <div class="amt-value" style="color:#c8a000;font-size:14px;">${fmtAmt(wgSum)}</div>
-      </div>
+      </div>` : ''}
       ${additionalAmt > 0 ? `<div class="amount-box" style="border-color:#7a3dcc;background:#f8f0ff;flex:none;min-width:0;">
         <div class="amt-label" style="color:#7a3dcc;">Additional</div>
         <div class="amt-value" style="color:#7a3dcc;font-size:14px;">${fmtAmt(additionalAmt)}</div>
@@ -800,12 +796,19 @@ function doPrint(){
       <div class="amount-box" style="border-color:#1a2340;background:#1a2340;flex:1;">
         <div class="amt-label" style="color:#f5d800;letter-spacing:1px;">TOTAL AMOUNT</div>
         <div class="amt-value" style="color:#f5d800;font-size:20px;">${fmtAmt(grandTotal)}</div>
-        ${advanceAmt > 0 ? `<div style="margin-top:4px;display:flex;gap:12px;font-size:10px;font-weight:700;">
-          <span style="color:#88ffbb;">Advance: ${fmtAmt(advanceAmt)}</span>
-          <span style="color:#ff9999;">Outstanding: ${fmtAmt(Math.max(0, grandTotal - advanceAmt))}</span>
-        </div>
-        <div style="margin-top:2px;font-size:10px;color:#aab8cc;font-weight:600;">${payStatus}</div>` : ''}
+        ${advanceAmt > 0 ? `<div style="margin-top:3px;font-size:9px;color:#aab8cc;font-weight:600;letter-spacing:0.5px;">${payStatus}</div>` : ''}
       </div>
+      ${advanceAmt > 0 ? `
+      <div style="display:flex;flex-direction:column;gap:3mm;flex:none;">
+        <div style="border:2px solid #007a3d;background:linear-gradient(135deg,#f0faf5,#e0f5ea);border-radius:6px;padding:3mm 4mm;min-width:34mm;">
+          <div style="font-size:9px;font-weight:800;color:#007a3d;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:1mm;">✓ ADVANCE PAID</div>
+          <div style="font-size:15px;font-weight:900;color:#007a3d;">${fmtAmt(advanceAmt)}</div>
+        </div>
+        <div style="border:2px solid #cc0000;background:linear-gradient(135deg,#fff5f5,#ffe8e8);border-radius:6px;padding:3mm 4mm;min-width:34mm;">
+          <div style="font-size:9px;font-weight:800;color:#cc0000;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:1mm;">⚡ OUTSTANDING</div>
+          <div style="font-size:15px;font-weight:900;color:#cc0000;">${fmtAmt(Math.max(0, grandTotal - advanceAmt))}</div>
+        </div>
+      </div>` : ''}
     </div>
     ${orderNotes && orderNotes !== '-' ? `<div class="info-row"><div class="info-cell wide"><span class="il">Notes</span><span class="iv notes-val">${orderNotes}</span></div></div>` : ''}
   </div>
