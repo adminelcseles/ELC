@@ -285,6 +285,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
       </select>
     </div>
     <div class="cfield"><label>Additional Amount (Rs)</label><input type="number" id="additionalAmount" placeholder="0" step="100" min="0" oninput="updateSummary()"/></div>
+    <div class="cfield"><label>Advance (Rs)</label><input type="number" id="advanceAmount" placeholder="0" step="100" min="0"/></div>
     <div class="cfield" style="grid-column:1/-1"><label>Notes</label><textarea id="orderNotes" rows="3" placeholder="Special instructions..."></textarea></div>
   </div>
   <table class="print-cust-table" style="display:none">
@@ -471,6 +472,7 @@ function doPrint(){
   const orderNotes   = document.getElementById('orderNotes').value     || '-';
   const payStatus    = document.getElementById('paymentStatus').value  || 'Cash';
   const additionalAmt = parseFloat(document.getElementById('additionalAmount').value)||0;
+  const advanceAmt    = parseFloat(document.getElementById('advanceAmount').value)||0;
   const totalDoors   = doors.length + ' door(s)';
 
   // Calculate grand total from all doors
@@ -798,10 +800,7 @@ function doPrint(){
       <div class="amount-box" style="border-color:#1a2340;background:#1a2340;flex:1;">
         <div class="amt-label" style="color:#f5d800;letter-spacing:1px;">TOTAL AMOUNT</div>
         <div class="amt-value" style="color:#f5d800;font-size:20px;">${fmtAmt(grandTotal)}</div>
-      </div>
-      <div class="amount-box payment">
-        <div class="amt-label">Payment Status</div>
-        <div class="amt-value pstatus">${payStatus}</div>
+        ${advanceAmt > 0 ? `<div style="margin-top:4px;font-size:10px;color:#aab8cc;font-weight:600;">${payStatus} &nbsp;·&nbsp; Advance: ${fmtAmt(advanceAmt)}</div>` : ''}
       </div>
     </div>
     ${orderNotes && orderNotes !== '-' ? `<div class="info-row"><div class="info-cell wide"><span class="il">Notes</span><span class="iv notes-val">${orderNotes}</span></div></div>` : ''}
