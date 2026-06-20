@@ -499,9 +499,15 @@ function doPrint(){
   const P2 = 4;
   const PG2_AVAIL = 259;
   const ROW_GAP   = 2;
-  // Header actual height ~85mm, footer ~18mm, gaps ~4mm
-  // Available for doors = 277 - 85 - 18 - 4 = 170mm
-  const DH1_MM = 168;
+  // Header height depends on whether advance/outstanding row is shown
+  // Base header (logo+info+subtotals): ~88mm
+  // Advance row adds ~14mm, notes row adds ~10mm
+  const HDR_BASE = 88;
+  const HDR_ADVANCE = advanceAmt > 0 ? 14 : 0;
+  const HDR_NOTES = (orderNotes && orderNotes !== '-') ? 10 : 0;
+  const HDR_TOTAL = HDR_BASE + HDR_ADVANCE + HDR_NOTES;
+  const FOOTER_MM = 14;
+  const DH1_MM = Math.max(60, 277 - HDR_TOTAL - FOOTER_MM - 4);
 
   /* For a page2 chunk of N doors (1-4), compute row heights */
   function pg2RowHeights(n){
