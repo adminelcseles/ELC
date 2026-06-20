@@ -800,7 +800,11 @@ function doPrint(){
       <div class="amount-box" style="border-color:#1a2340;background:#1a2340;flex:1;">
         <div class="amt-label" style="color:#f5d800;letter-spacing:1px;">TOTAL AMOUNT</div>
         <div class="amt-value" style="color:#f5d800;font-size:20px;">${fmtAmt(grandTotal)}</div>
-        ${advanceAmt > 0 ? `<div style="margin-top:4px;font-size:10px;color:#aab8cc;font-weight:600;">${payStatus} &nbsp;·&nbsp; Advance: ${fmtAmt(advanceAmt)}</div>` : ''}
+        ${advanceAmt > 0 ? `<div style="margin-top:4px;display:flex;gap:12px;font-size:10px;font-weight:700;">
+          <span style="color:#88ffbb;">Advance: ${fmtAmt(advanceAmt)}</span>
+          <span style="color:#ff9999;">Outstanding: ${fmtAmt(Math.max(0, grandTotal - advanceAmt))}</span>
+        </div>
+        <div style="margin-top:2px;font-size:10px;color:#aab8cc;font-weight:600;">${payStatus}</div>` : ''}
       </div>
     </div>
     ${orderNotes && orderNotes !== '-' ? `<div class="info-row"><div class="info-cell wide"><span class="il">Notes</span><span class="iv notes-val">${orderNotes}</span></div></div>` : ''}
