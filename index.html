@@ -277,9 +277,6 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
     <div class="cfield" style="grid-column:1/-1"><label>Address</label><input type="text" id="custAddress" placeholder="No. 45, Main Street, Colombo"/></div>
     <div class="cfield"><label>Order Number</label><input type="text" id="orderNum" readonly style="background:#f0f4ff;font-weight:700;color:#1a1aff;cursor:not-allowed;"/></div>
     <div class="cfield"><label>Date</label><input type="date" id="orderDate"/></div>
-    <div class="cfield"><label>Total Amount (RS)</label><input type="number" id="totalAmount" placeholder="500000" oninput="calcOutstanding()"/></div>
-    <div class="cfield"><label>Advance (RS)</label><input type="number" id="advanceAmount" placeholder="200000" oninput="calcOutstanding()"/></div>
-    <div class="cfield"><label>Outstanding Amount (RS)</label><input type="number" id="outstandingAmount" placeholder="0" readonly style="background:#fff5f5;color:#cc0000;font-weight:700;border-color:#cc0000;cursor:not-allowed;"/></div>
     <div class="cfield"><label>Payment Status</label>
       <select id="paymentStatus" style="padding:6px 8px;border:1.5px solid #ccc;border-radius:4px;font-size:14px;font-weight:600;">
         <option value="Cash">Cash</option>
@@ -287,6 +284,7 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
         <option value="Pending">Pending</option>
       </select>
     </div>
+    <div class="cfield"><label>Additional Amount (Rs)</label><input type="number" id="additionalAmount" placeholder="0" step="100" min="0" oninput="updateSummary()"/></div>
     <div class="cfield" style="grid-column:1/-1"><label>Notes</label><textarea id="orderNotes" rows="3" placeholder="Special instructions..."></textarea></div>
   </div>
   <table class="print-cust-table" style="display:none">
@@ -319,6 +317,26 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
     <div class="sum-box"><div class="sv" id="sum-t1" style="color:#1a1aff">0</div><div class="sl">D 01)</div></div>
     <div class="sum-box"><div class="sv" id="sum-t2" style="color:#cc0000">0</div><div class="sl">D 02)</div></div>
   </div>
+  <!-- TOTAL AMOUNT ROW -->
+  <div style="margin-top:10px;background:#1a2340;border-radius:10px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span style="color:#aab8cc;font-size:12px;font-weight:700;">D 01)</span>
+      <span id="sum-d1cost" style="color:#88aaff;font-size:13px;font-weight:900;">Rs. 0/=</span>
+      <span style="color:#888;font-size:13px;">+</span>
+      <span style="color:#aab8cc;font-size:12px;font-weight:700;">D 02)</span>
+      <span id="sum-d2cost" style="color:#ff9999;font-size:13px;font-weight:900;">Rs. 0/=</span>
+      <span style="color:#888;font-size:13px;">+</span>
+      <span style="color:#aab8cc;font-size:12px;font-weight:700;">WG</span>
+      <span id="sum-wgcost" style="color:#f5d800;font-size:13px;font-weight:900;">Rs. 0/=</span>
+      <span style="color:#888;font-size:13px;">+</span>
+      <span style="color:#aab8cc;font-size:12px;font-weight:700;">Additional</span>
+      <span id="sum-addcost" style="color:#cc99ff;font-size:13px;font-weight:900;">Rs. 0/=</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="color:#f5d800;font-size:13px;font-weight:700;">=&nbsp;TOTAL AMOUNT</span>
+      <span id="sum-totalamt" style="color:#f5d800;font-weight:900;font-size:22px;background:rgba(245,216,0,0.12);padding:4px 14px;border-radius:6px;border:1.5px solid #f5d80066;">Rs. 0/=</span>
+    </div>
+  </div>
 </div>
 
 <div class="view-area" id="viewArea">
@@ -334,7 +352,7 @@ window.addEventListener('load', function(){
 
 function resetAll(){
   // Clear all customer fields
-  ['custName','custWhatsapp','custAddress','totalAmount','advanceAmount','outstandingAmount','orderNotes'].forEach(id=>{
+  ['custName','custWhatsapp','custAddress','orderNotes'].forEach(id=>{
     const el = document.getElementById(id);
     if(el){ el.value=''; }
   });
@@ -372,24 +390,6 @@ function formatWA(el){
   el.value = out;
 }
 
-function calcOutstanding(){
-  const total = parseFloat(document.getElementById('totalAmount').value)||0;
-  const adv   = parseFloat(document.getElementById('advanceAmount').value)||0;
-  const out   = Math.max(0, total - adv);
-  const field = document.getElementById('outstandingAmount');
-  field.value = out.toFixed(2);
-  // highlight negative in red
-  if(out < 0){
-    field.style.color='#cc0000';
-    field.style.borderColor='#cc0000';
-    field.style.background='#fff0f0';
-  } else {
-    field.style.color='#cc0000';
-    field.style.borderColor='#cc0000';
-    field.style.background='#fff5f5';
-  }
-}
-
 function frac(v){
   const n=parseFloat(v);if(isNaN(n))return'0';
   const w=Math.floor(n),d=Math.round((n-w)*4);
@@ -410,10 +410,7 @@ function sendWhatsApp(){
   const custWhatsapp= document.getElementById('custWhatsapp').value  || '';
   const orderNum    = document.getElementById('orderNum').value      || '';
   const orderDate   = document.getElementById('orderDate').value     || '';
-  const totalAmount = document.getElementById('totalAmount').value   || '0';
-  const advanceAmt  = document.getElementById('advanceAmount').value || '0';
   const payStatus   = document.getElementById('paymentStatus').value || 'Cash';
-  const outstanding = (parseFloat(totalAmount)||0) - (parseFloat(advanceAmt)||0);
 
   if(!custWhatsapp || custWhatsapp === '-'){
     alert('WhatsApp number එකක් enter කරන්න!');
@@ -447,9 +444,6 @@ function sendWhatsApp(){
    • D 02): ${t2}`:''}${wg>0?`
    • Wicket Gate: ${wg}`:''}
 ━━━━━━━━━━━━━━━━━━━
-💰 Total Amount: Rs. ${(parseFloat(totalAmount)||0).toLocaleString()}/=
-✅ Advance Paid: Rs. ${(parseFloat(advanceAmt)||0).toLocaleString()}/=
-⏳ Outstanding: Rs. ${outstanding.toLocaleString()}/=
 💳 Payment: ${payStatus}
 ━━━━━━━━━━━━━━━━━━━
 Thank you for choosing ELCARDO! 🙏`;
@@ -465,11 +459,16 @@ function doPrint(){
   const orderNum     = document.getElementById('orderNum').value       || '-';
   const orderDate    = document.getElementById('orderDate').value      || '-';
   const orderNotes   = document.getElementById('orderNotes').value     || '-';
-  const totalAmount  = document.getElementById('totalAmount').value    || '0';
-  const advanceAmt   = document.getElementById('advanceAmount').value  || '0';
   const payStatus    = document.getElementById('paymentStatus').value  || 'Cash';
-  const outstanding  = (parseFloat(totalAmount)||0) - (parseFloat(advanceAmt)||0);
+  const additionalAmt = parseFloat(document.getElementById('additionalAmount').value)||0;
   const totalDoors   = doors.length + ' door(s)';
+
+  // Calculate grand total from all doors
+  const d1Sum = doors.filter(d=>d.type==='t1').reduce((s,d)=>s+(d.totalCost||0),0);
+  const d2Sum = doors.filter(d=>d.type==='t2').reduce((s,d)=>s+(d.totalCost||0),0);
+  const wgSum = doors.filter(d=>d.type==='wg').reduce((s,d)=>s+(d.totalCost||0),0);
+  const grandTotal = d1Sum + d2Sum + wgSum + additionalAmt;
+  const fmtAmt = v => 'Rs. ' + Math.round(v).toLocaleString() + '/=';
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      A4 Portrait  @96dpi
@@ -755,17 +754,26 @@ function doPrint(){
       <div class="info-cell"><span class="il">WhatsApp No</span><span class="iv">${custWhatsapp}</span></div>
     </div>
     <div class="info-row amounts-row">
-      <div class="amount-box">
-        <div class="amt-label">Total Amount</div>
-        <div class="amt-value">RS: ${(parseFloat(totalAmount)||0).toLocaleString()}/=</div>
+      <!-- Door type sub-totals row -->
+      <div class="amount-box" style="border-color:#1a1aff44;background:#f0f4ff;flex:none;min-width:0;">
+        <div class="amt-label" style="color:#1a1aff;">D 01) Total</div>
+        <div class="amt-value" style="color:#1a1aff;font-size:14px;">${fmtAmt(d1Sum)}</div>
       </div>
-      <div class="amount-box advance">
-        <div class="amt-label">Advance</div>
-        <div class="amt-value">RS: ${(parseFloat(advanceAmt)||0).toLocaleString()}/=</div>
+      <div class="amount-box" style="border-color:#cc000044;background:#fff5f5;flex:none;min-width:0;">
+        <div class="amt-label" style="color:#cc0000;">D 02) Total</div>
+        <div class="amt-value" style="color:#cc0000;font-size:14px;">${fmtAmt(d2Sum)}</div>
       </div>
-      <div class="amount-box outstanding">
-        <div class="amt-label">Outstanding Amount</div>
-        <div class="amt-value">RS: ${outstanding.toLocaleString()}/=</div>
+      <div class="amount-box" style="border-color:#c8a00044;background:#fffbf0;flex:none;min-width:0;">
+        <div class="amt-label" style="color:#c8a000;">WG Total</div>
+        <div class="amt-value" style="color:#c8a000;font-size:14px;">${fmtAmt(wgSum)}</div>
+      </div>
+      ${additionalAmt > 0 ? `<div class="amount-box" style="border-color:#7a3dcc;background:#f8f0ff;flex:none;min-width:0;">
+        <div class="amt-label" style="color:#7a3dcc;">Additional</div>
+        <div class="amt-value" style="color:#7a3dcc;font-size:14px;">${fmtAmt(additionalAmt)}</div>
+      </div>` : ''}
+      <div class="amount-box" style="border-color:#1a2340;background:#1a2340;flex:1;">
+        <div class="amt-label" style="color:#f5d800;letter-spacing:1px;">TOTAL AMOUNT</div>
+        <div class="amt-value" style="color:#f5d800;font-size:20px;">${fmtAmt(grandTotal)}</div>
       </div>
       <div class="amount-box payment">
         <div class="amt-label">Payment Status</div>
@@ -1122,7 +1130,7 @@ function doPrint(){
 
   // Auto-save to Google Sheet
   saveToSheet(custName, custWhatsapp, custAddress, orderNum, orderDate,
-              totalAmount, advanceAmt, outstanding, payStatus, allDoors);
+              grandTotal, 0, 0, payStatus, allDoors);
 }
 
 // ════════════════════════════════════════════════════════
@@ -1168,6 +1176,20 @@ function updateSummary(){
   document.getElementById('sum-wg').textContent=doors.filter(d=>d.type==='wg').length;
   document.getElementById('sum-t1').textContent=doors.filter(d=>d.type==='t1').length;
   document.getElementById('sum-t2').textContent=doors.filter(d=>d.type==='t2').length;
+
+  // Calculate total costs by type
+  const d1Total = doors.filter(d=>d.type==='t1').reduce((s,d)=>s+(d.totalCost||0),0);
+  const d2Total = doors.filter(d=>d.type==='t2').reduce((s,d)=>s+(d.totalCost||0),0);
+  const wgTotal = doors.filter(d=>d.type==='wg').reduce((s,d)=>s+(d.totalCost||0),0);
+  const addAmt  = parseFloat((document.getElementById('additionalAmount')||{}).value)||0;
+  const grandTotal = d1Total + d2Total + wgTotal + addAmt;
+
+  const fmt = v => 'Rs. ' + Math.round(v).toLocaleString() + '/=';
+  document.getElementById('sum-d1cost').textContent  = fmt(d1Total);
+  document.getElementById('sum-d2cost').textContent  = fmt(d2Total);
+  document.getElementById('sum-wgcost').textContent  = fmt(wgTotal);
+  document.getElementById('sum-addcost').textContent = fmt(addAmt);
+  document.getElementById('sum-totalamt').textContent= fmt(grandTotal);
 }
 
 function addDoor(type){
@@ -1212,7 +1234,7 @@ function deleteDoor(id){
 function hdr(id,type){
   const lbl=type==='wg'?'Wicket Gate':type==='t1'?'D 01)':'D 02)';
   const cls=type==='wg'?'lblwg':type==='t1'?'lbl1':'lbl2';
-  return`<div class="door-header"><span class="drag-handle">⠿</span><span class="door-label ${cls}">${lbl}</span><button class="del-btn" onclick="deleteDoor(${id})">✕</button></div>`;
+  return`<div class="door-header"><span class="drag-handle">⠿</span><span class="door-label ${cls}">${lbl}</span><span id="hdr-cost-${id}" style="margin-left:6px;background:#f5d800;color:#1a2340;font-size:12px;font-weight:900;padding:3px 10px;border-radius:5px;display:none;white-space:nowrap;">Rs. 0/=</span><button class="del-btn" onclick="deleteDoor(${id})">✕</button></div>`;
 }
 
 /* ══ WICKET GATE ══ */
@@ -1289,6 +1311,10 @@ function wgCostUpdate(id){
   dispEl.textContent='Rs. '+Math.round(cost).toLocaleString()+'/=';
   const d=doors.find(x=>x.id===id);
   if(d)d.totalCost=cost;
+  // Update header badge
+  const hdrCost=document.getElementById('hdr-cost-'+id);
+  if(hdrCost){hdrCost.textContent='Total Cost: Rs. '+Math.round(cost).toLocaleString()+'/=';hdrCost.style.display=cost>0?'':'none';}
+  updateSummary();
 }
 
 /* ══ DOOR TYPE 1 ══ */
@@ -1398,6 +1424,10 @@ function d1CalcCost(id){
   d.totalCost  = total;
   document.getElementById('d1-totalCost-'+id).textContent =
     'Rs. ' + Math.round(total).toLocaleString() + '/=';
+  // Update header badge
+  const hdrCost=document.getElementById('hdr-cost-'+id);
+  if(hdrCost){hdrCost.textContent='Total Cost: Rs. '+Math.round(total).toLocaleString()+'/=';hdrCost.style.display=total>0?'':'none';}
+  updateSummary();
 }
 function d1Box(id,key){
   const d=doors.find(x=>x.id===id);d.boxes[key]=!d.boxes[key];
@@ -1576,6 +1606,10 @@ function d2Update(id){
         d.coveringCost = coveringCost;
         d.sqftPrice2   = sqftPrice;
         d.totalCost    = totalCost;
+        // Update header badge
+        const hdrCost=document.getElementById('hdr-cost-'+id);
+        if(hdrCost){hdrCost.textContent='Total Cost: Rs. '+Math.round(totalCost).toLocaleString()+'/=';hdrCost.style.display=totalCost>0?'':'none';}
+        updateSummary();
       }
     }
   }
