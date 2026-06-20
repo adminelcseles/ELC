@@ -454,7 +454,17 @@ Thank you for choosing ELCARDO! 🙏`;
 
 function doPrint(){
   const custName     = document.getElementById('custName').value      || '-';
-  const custWhatsapp = document.getElementById('custWhatsapp').value   || '-';
+  const rawWA        = document.getElementById('custWhatsapp').value  || '-';
+  // Normalise to +94 XX XXX XXXX for the printed sheet
+  function toPlus94(raw){
+    let v = raw.replace(/\D/g,'');
+    if(v.startsWith('94')) v = v.slice(2);
+    else if(v.startsWith('0')) v = v.slice(1);
+    if(v.length < 9) return raw; // too short — return as-is
+    v = v.slice(0,9);
+    return '+94 ' + v.slice(0,2) + ' ' + v.slice(2,5) + ' ' + v.slice(5,9);
+  }
+  const custWhatsapp = rawWA !== '-' ? toPlus94(rawWA) : '-';
   const custAddress  = document.getElementById('custAddress').value    || '-';
   const orderNum     = document.getElementById('orderNum').value       || '-';
   const orderDate    = document.getElementById('orderDate').value      || '-';
@@ -723,7 +733,21 @@ function doPrint(){
   }
 
   /* ── page layout ── */
-  const allDoors = doors.map(readDoor);
+  const allDoorsRaw = doors.map(readDoor);
+
+  // Filter out blank doors (all measurements zero) — warn user
+  const blankCount = allDoorsRaw.filter(dv => {
+    if(dv.type==='wg') return (dv.h===0 && dv.w===0);
+    return (dv.bh===0 && dv.eh===0 && dv.bw===0 && dv.ew===0);
+  }).length;
+  if(blankCount > 0){
+    const proceed = confirm(`⚠️ ${blankCount} door(s) have no measurements entered and will be skipped in the print.\n\nPrint anyway?`);
+    if(!proceed) return;
+  }
+  const allDoors = allDoorsRaw.filter(dv => {
+    if(dv.type==='wg') return !(dv.h===0 && dv.w===0);
+    return !(dv.bh===0 && dv.eh===0 && dv.bw===0 && dv.ew===0);
+  });
   const tc = {wg:0, t1:0, t2:0};
   allDoors.forEach(dv => { tc[dv.type]++; dv.num = tc[dv.type]; });
   const p1list = allDoors.slice(0, P1);
