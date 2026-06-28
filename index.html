@@ -346,22 +346,24 @@ body{font-family:Arial,sans-serif;background:#eef2f7;min-height:100vh;padding:14
 
 <script>
 let doors=[],nextId=1,dragSrc=null;
-// track which orders already saved (persisted across refreshes)
-function _isAlreadySaved(orderNum){
+// Throttle: same order can only save once per 15 seconds
+function _canSave(orderNum){
   try{
-    const saved = JSON.parse(localStorage.getItem('elc_saved_orders')||'[]');
-    return saved.includes(orderNum);
-  }catch(e){return false;}
+    const map = JSON.parse(localStorage.getItem('elc_save_times')||'{}');
+    const last = map[orderNum] || 0;
+    return (Date.now() - last) > 15000;
+  }catch(e){return true;}
 }
 function _markSaved(orderNum){
   try{
-    const saved = JSON.parse(localStorage.getItem('elc_saved_orders')||'[]');
-    if(!saved.includes(orderNum)){
-      saved.push(orderNum);
-      // keep only last 50 orders to avoid bloat
-      if(saved.length > 50) saved.splice(0, saved.length - 50);
-      localStorage.setItem('elc_saved_orders', JSON.stringify(saved));
+    const map = JSON.parse(localStorage.getItem('elc_save_times')||'{}');
+    map[orderNum] = Date.now();
+    // keep only last 50 entries
+    const keys = Object.keys(map);
+    if(keys.length > 50){
+      keys.sort((a,b)=>map[a]-map[b]).slice(0,keys.length-50).forEach(k=>delete map[k]);
     }
+    localStorage.setItem('elc_save_times', JSON.stringify(map));
   }catch(e){}
 }
 
@@ -1186,10 +1188,12 @@ function doPrint(){
 
   // Auto-save to Google Sheet — only once per order per session
   const outstandingAmt = Math.max(0, grandTotal - advanceAmt);
-  // Always update sheet with latest data (Apps Script upserts by Order No.)
-  _markSaved(orderNum);
-  saveToSheet(custName, custWhatsapp, custAddress, orderNum, orderDate,
-              grandTotal, advanceAmt, outstandingAmt, payStatus, allDoors);
+  // Save to sheet — throttled to once per 15s per order to prevent duplicates
+  if(_canSave(orderNum)){
+    _markSaved(orderNum);
+    saveToSheet(custName, custWhatsapp, custAddress, orderNum, orderDate,
+                grandTotal, advanceAmt, outstandingAmt, payStatus, allDoors);
+  }
 }
 
 // ════════════════════════════════════════════════════════
